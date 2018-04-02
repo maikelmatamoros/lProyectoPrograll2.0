@@ -6,6 +6,7 @@ import domain.Book;
 import domain.Material;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.InternalFrameEvent;
@@ -15,8 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class JIFAllMaterials extends javax.swing.JInternalFrame implements InternalFrameListener {
 
     private DefaultTableModel dtmModelTable;
-    ;
-    private ArrayList<Material> list;
+    private List<ArrayList> list;
     private MaterialBusiness materialBusiness;
 
     public JIFAllMaterials() {
@@ -75,17 +75,21 @@ public class JIFAllMaterials extends javax.swing.JInternalFrame implements Inter
             String[] columNames1 = {"Code", "Type", "Description"};
             this.dtmModelTable = new DefaultTableModel(material, columNames1);
             this.materialBusiness = new MaterialBusiness();
-            this.list = (ArrayList<Material>) materialBusiness.getAllMaterials();
-            
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getType().equals("Book")) {
-                    this.dtmModelTable.addRow(new Object[]{list.get(i).getCode(), list.get(i).getType(),
-                        ((Book) list.get(i)).getName()});
-                } else {
-                    this.dtmModelTable.addRow(new Object[]{list.get(i).getCode(), list.get(i).getType(),
-                        ((Audiovisual) list.get(i)).getDescription()});
+            this.list = materialBusiness.getBooksAndAudiovisual();
+
+            for(int i=0; i<list.size(); i++){
+                ArrayList<Material> temp = list.get(i);
+                for(int j=0; j<temp.size(); j++){
+                    if(i==0){
+                        this.dtmModelTable.addRow(new Object[]{temp.get(j).getCode(), temp.get(j).getType(),
+                        ((Book) temp.get(j)).getName()});
+                    }else{
+                        this.dtmModelTable.addRow(new Object[]{temp.get(j).getCode(), temp.get(j).getType(),
+                        ((Audiovisual) temp.get(j)).getDescription()});
+                    }
                 }
-            } // for
+            }
+            
             this.jTable1.setModel(dtmModelTable);
             this.jTable1.setEnabled(false);
         } // initTable

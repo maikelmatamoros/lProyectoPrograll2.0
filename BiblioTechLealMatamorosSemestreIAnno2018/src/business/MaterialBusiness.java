@@ -32,8 +32,4 @@ public class MaterialBusiness {
         this.materialFile.addBookExixting(code, quantity);
     } // addBookExixting
 
-    public List<Material> getAllMaterials() throws IOException, ClassNotFoundException {
-        return this.materialFile.getAllMaterials();
-    } // getAllMaterials
-
 } // fin de la clase

@@ -22,55 +22,43 @@ public class MaterialFile {
 
     public void addMaterial(Material material) throws IOException, ClassNotFoundException {
         File file = new File(this.path);
-        List<Material> materialList = new ArrayList<Material>();
+        List<ArrayList> materialList = new ArrayList<ArrayList>();
+        ArrayList<Book> books = new ArrayList<Book>();
+        ArrayList<Audiovisual> audiovisuals = new ArrayList<Audiovisual>();
+        materialList.add(books);
+        materialList.add(audiovisuals);
         if (file.exists()) {
             ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
             Object aux = objectInputStream.readObject();
-            materialList = (List<Material>) aux;
+            materialList = (List<ArrayList>) aux;
             objectInputStream.close();
         } // if(file.exists())
-        materialList.add(material);
+        if (material.getClass().getName().equals("domain.Book")) {
+            materialList.get(0).add(material);
+        } else {
+            materialList.get(1).add(material);
+        }
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
         objectOutputStream.writeUnshared(materialList);
         objectOutputStream.close();
     } // addMaterial: agrega nuevo registro
 
     public List<ArrayList> getBooksAndAudiovisual() throws IOException, ClassNotFoundException {
-        List<Material> materials = getAllMaterials();
-        ArrayList<Material> books = new ArrayList<Material>();
-        ArrayList<Material> audiovisuals = new ArrayList<Material>();
-
-        for (int i = 0; i < materials.size(); i++) {
-            if (materials.get(i).getClass().getName().equals("domain.Book")) {
-                books.add(materials.get(i));
-            } else {
-                audiovisuals.add(materials.get(i));
-            }
-        } // for
-        List<ArrayList> booksAndAudiovisual = new ArrayList<>();
-        booksAndAudiovisual.add(books);
-        booksAndAudiovisual.add(audiovisuals);
-        return booksAndAudiovisual;
-    } // getBooksAndAudiovisual: retorna lista con ArrayList de libros en la posicion 0
-    // y ArrayList de Audiovisuales en la posicion 1
-
-    public List<Material> getAllMaterials() throws IOException, ClassNotFoundException {
         File myFile = new File(this.path);
-        List<Material> materialList = new ArrayList<Material>();
-
+        List<ArrayList> materialList = new ArrayList<ArrayList>();
         if (myFile.exists()) {
             ObjectInputStream objectInputStream
                     = new ObjectInputStream(
                             new FileInputStream(myFile)
                     );
             Object aux = objectInputStream.readObject();
-            materialList = (List<Material>) aux;
+            materialList = (List<ArrayList>) aux;
             objectInputStream.close();
         } // if(myFile.exists())
         return materialList;
-    } // getAllMaterials: retorna lista de todos los materiales
+    } // getBooksAndAudiovisual: retorna lista con ArrayList en 0 Books y en 1 Audiovisuals
 
-    public ArrayList<Material> getMaterial(String type) throws IOException, ClassNotFoundException {
+    public ArrayList<Material> getArrayListType(String type) throws IOException, ClassNotFoundException {
         if (type.equalsIgnoreCase("book")) {
             return getBooksAndAudiovisual().get(0);
         }
@@ -82,16 +70,19 @@ public class MaterialFile {
             }
         } // for
         return materialType;
-    } // getMaterial: retorna ArrayList según tipo 
+    } // getArrayListType: retorna ArrayList según tipo 
 
     public Material getMaterial(int code) throws IOException, ClassNotFoundException {
-        List<Material> materialList = getAllMaterials();
+        List<ArrayList> materialList = getBooksAndAudiovisual();
         Material material = null;
         for (int i = 0; i < materialList.size(); i++) {
-            if (materialList.get(i).getCode() == code) {
-                material = materialList.get(i);
-                break;
-            } // if 
+            ArrayList<Material> temp = materialList.get(i);
+            for (int j = 0; j < temp.size(); j++) {
+                if (temp.get(j).getCode() == code) {
+                    material = (Material) materialList.get(i).get(j);
+                    break;
+                } // if 
+            } // for j
         } // for i
         return material;
     } // getMaterial: retorna objeto material segun codigo
@@ -105,17 +96,17 @@ public class MaterialFile {
     } // getCodeMaterial: retorna ISBN ficticio
 
     public void addBookExixting(int code, int quantity) throws IOException, ClassNotFoundException {
-        List<Material> materials = getAllMaterials();
-        for (Material material : materials) {
-            if (material.getCode() == code) {
-                ((Book) material).addUnit(quantity);
-                rewrite(materials);
+        List<ArrayList> list = getBooksAndAudiovisual();
+        for (int i = 0; i < list.get(0).size(); i++) {
+            if (((Book) list.get(0).get(i)).getCode() == code) {
+                ((Book) list.get(0).get(i)).addUnit(quantity);
                 break;
             }
-        } // for
+        }
+        rewrite(list);
     } // addBook: agrega cantidad deseada al libro según el código
 
-    private void rewrite(List<Material> list) throws IOException, ClassNotFoundException {
+    private void rewrite(List<ArrayList> list) throws IOException, ClassNotFoundException {
         File file = new File(this.path);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
         objectOutputStream.writeUnshared(list);
@@ -124,26 +115,25 @@ public class MaterialFile {
 
     public boolean update(int code, int type) throws IOException, ClassNotFoundException {
         List<ArrayList> materials = getBooksAndAudiovisual();
-
         if (type == 0) {
-            ArrayList<Book>listBook=materials.get(0);
+            ArrayList<Book> listBook = materials.get(0);
             for (int i = 0; i < materials.get(type).size(); i++) {
-                if(listBook.get(i).getCode()==code){
-                    listBook.get(i).setAmountAvaiable(listBook.get(i).getAmountAvaiable()-1);
+                if (listBook.get(i).getCode() == code) {
+                    listBook.get(i).setAmountAvaiable(listBook.get(i).getAmountAvaiable() - 1);
                     materials.add(0, listBook);
                 }
             }
-        }else{
-            ArrayList<Audiovisual>listAudioV=materials.get(1);
+        } else {
+            ArrayList<Audiovisual> listAudioV = materials.get(1);
             for (int i = 0; i < materials.get(type).size(); i++) {
-                if(listAudioV.get(i).getCode()==code){
+                if (listAudioV.get(i).getCode() == code) {
                     listAudioV.get(i).setAvailability(false);
                     materials.add(1, listAudioV);
                 }
             }
         }
-        //rewrite(materials);
+        rewrite(materials);
         return true;
-    }
+    } // update
 
 } // fin de la clase

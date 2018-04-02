@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package business;
 
 import domain.Student;
@@ -11,10 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- *
- * @author maikel
- */
 public class StudentBusiness {
 
     private StudentFile studentFile;
@@ -56,4 +47,5 @@ public class StudentBusiness {
         return this.studentFile.validLogin(ID);
 
     }
-}
+    
+} // fin de la clase

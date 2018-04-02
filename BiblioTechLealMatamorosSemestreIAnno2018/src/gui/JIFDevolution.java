@@ -103,15 +103,16 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
         this.remove(this.jbCheck);
         this.repaint();
 
-        try {
-            this.materialBusiness = new MaterialBusiness();
-            this.list = (ArrayList<Material>) this.materialBusiness.getAllMaterials();
-        } catch (IOException ex) {
-            Logger.getLogger(JIFStudentDelete.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        initTable(this.list);
+        //ARREGLAR
+//        try {
+//            this.materialBusiness = new MaterialBusiness();
+//            this.list = (ArrayList<Material>) this.materialBusiness.getAllMaterials();
+//        } catch (IOException ex) {
+//            Logger.getLogger(JIFStudentDelete.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        initTable(this.list);
     } // refresh
 
     @Override
