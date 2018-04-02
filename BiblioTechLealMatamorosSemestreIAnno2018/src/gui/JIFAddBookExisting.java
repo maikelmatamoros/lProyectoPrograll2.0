@@ -165,13 +165,13 @@ public class JIFAddBookExisting extends javax.swing.JInternalFrame implements In
         try {
             ArrayList<Material> list = removeDigitals(this.materialBusiness.getBooksAndAudiovisual().get(0));
             Object[][] employeeDates = new Object[0][0];
-            String[] columNames1 = {"Code", "Name", "Format", "Amount"};
+            String[] columNames1 = {"Code", "Name", "Format", "AmountAvaiable"};
             DefaultTableModel dtmModelTable = new DefaultTableModel(employeeDates, columNames1);
             Book book = new Book();
             for (int i = 0; i < list.size(); i++) {
                 book = (Book) list.get(i);
                 dtmModelTable.addRow(new Object[]{book.getCode(), book.getName(),
-                    book.getFormat(), book.getAmount()});
+                    book.getFormat(), book.getAmountAvaiable()});
             } // for
             this.jtBooks.setModel(dtmModelTable);
             this.jtBooks.setEnabled(false);

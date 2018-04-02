@@ -330,7 +330,7 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
                     JOptionPane.showMessageDialog(this, "All spaces are required", "Error", 0);
                 } else {
                     Book book = new Book(name, author, year, this.jcbTheme.getSelectedItem().toString(),
-                            language, country, "", 1, 1, -1, this.jcbOption.getSelectedItem().toString());
+                            language, country, "", 1, -1, this.jcbOption.getSelectedItem().toString());
 
                     if (this.jrbDigital.isSelected()) {
                         book.setFormat("Digital");

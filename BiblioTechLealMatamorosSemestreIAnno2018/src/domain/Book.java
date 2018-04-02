@@ -9,7 +9,6 @@ public class Book extends Material {
     private String language;
     private String country;
     private String format;
-    private int amount;
     private int amountAvaiable;
 
     public Book() {
@@ -20,11 +19,10 @@ public class Book extends Material {
         this.language = "";
         this.country = "";
         this.format = "";
-        this.amount = -1;
         this.amountAvaiable = -1;
     } // constructor
 
-    public Book(String name, String author, int year, String theme, String language, String country, String format, int amount, int amountAvaiable, int code, String type) {
+    public Book(String name, String author, int year, String theme, String language, String country, String format, int amountAvaiable, int code, String type) {
         super(code, type);
         this.name = name;
         this.author = author;
@@ -33,7 +31,6 @@ public class Book extends Material {
         this.language = language;
         this.country = country;
         this.format = format;
-        this.amount = amount;
         this.amountAvaiable = amountAvaiable;
     } // constructor sobrecargado
 
@@ -93,14 +90,6 @@ public class Book extends Material {
         this.format = format;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     public int getAmountAvaiable() {
         return amountAvaiable;
     }
@@ -110,13 +99,12 @@ public class Book extends Material {
     }
 
     public void addUnit(int quantity) {
-        setAmount(getAmount() + quantity);
         setAmountAvaiable(getAmountAvaiable() + quantity);
     } // addUnit
 
     @Override
     public String toString() {
-        return super.toString() + "Book{" + "name=" + name + ", author=" + author + ", year=" + year + ", theme=" + theme + ", language=" + language + ", country=" + country + ", format=" + format + ", amount=" + amount + ", amountAvaiable=" + amountAvaiable + '}';
+        return super.toString() + "Book{" + "name=" + name + ", author=" + author + ", year=" + year + ", theme=" + theme + ", language=" + language + ", country=" + country + ", format=" + format  + ", amountAvaiable=" + amountAvaiable + '}';
     }
     
     

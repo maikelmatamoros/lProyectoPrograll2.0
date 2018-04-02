@@ -1,5 +1,6 @@
 package file;
 
+import domain.Audiovisual;
 import domain.Book;
 import domain.Material;
 import java.io.File;
@@ -107,7 +108,7 @@ public class MaterialFile {
         List<Material> materials = getAllMaterials();
         for (Material material : materials) {
             if (material.getCode() == code) {
-                ((Book)material).addUnit(quantity);
+                ((Book) material).addUnit(quantity);
                 rewrite(materials);
                 break;
             }
@@ -121,20 +122,28 @@ public class MaterialFile {
         objectOutputStream.close();
     } // rewrite: Actualiza el archivo
 
-    private boolean update(int code, int type) throws IOException, ClassNotFoundException {
+    public boolean update(int code, int type) throws IOException, ClassNotFoundException {
         List<ArrayList> materials = getBooksAndAudiovisual();
-        
-        if(type==0){
-            
-        }
+
+        if (type == 0) {
+            ArrayList<Book>listBook=materials.get(0);
             for (int i = 0; i < materials.get(type).size(); i++) {
-                if(code>5){
-                    
+                if(listBook.get(i).getCode()==code){
+                    listBook.get(i).setAmountAvaiable(listBook.get(i).getAmountAvaiable()-1);
+                    materials.add(0, listBook);
                 }
             }
-
-        
-            return true;
+        }else{
+            ArrayList<Audiovisual>listAudioV=materials.get(1);
+            for (int i = 0; i < materials.get(type).size(); i++) {
+                if(listAudioV.get(i).getCode()==code){
+                    listAudioV.get(i).setAvailability(false);
+                    materials.add(1, listAudioV);
+                }
+            }
+        }
+        //rewrite(materials);
+        return true;
     }
 
 } // fin de la clase
