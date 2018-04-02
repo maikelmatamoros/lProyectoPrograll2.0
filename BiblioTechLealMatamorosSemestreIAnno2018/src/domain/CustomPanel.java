@@ -9,8 +9,19 @@ import javax.swing.JPanel;
 //...
  
 public class CustomPanel extends JPanel{    
-    private URL url = getClass().getResource("/assets/fondo.jpeg");
-    Image image = new ImageIcon(url).getImage();
+    private URL url;
+    private Image image;
+    
+    public CustomPanel(int imageNum){
+        if(imageNum==1){
+            this.url = getClass().getResource("/assets/fondo.jpeg");
+        }else{
+            System.out.println("Entra");
+            this.url = getClass().getResource("/assets/main.jpg");
+        }
+        
+        this.image = new ImageIcon(url).getImage();
+    }
  
     @Override
     public void paint(Graphics g){

@@ -76,7 +76,7 @@ public class JIFAllMaterials extends javax.swing.JInternalFrame implements Inter
             this.dtmModelTable = new DefaultTableModel(material, columNames1);
             this.materialBusiness = new MaterialBusiness();
             this.list = materialBusiness.getBooksAndAudiovisual();
-
+            System.out.println(this.list.size());
             for(int i=0; i<list.size(); i++){
                 ArrayList<Material> temp = list.get(i);
                 for(int j=0; j<temp.size(); j++){

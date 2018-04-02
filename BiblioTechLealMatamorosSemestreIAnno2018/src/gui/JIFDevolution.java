@@ -1,5 +1,6 @@
 package gui;
 
+import business.LoanBusiness;
 import business.MaterialBusiness;
 import business.StudentBusiness;
 import domain.Audiovisual;
@@ -13,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -31,14 +33,14 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
     private JTable jtbTable;
     private DefaultTableModel dtmModelTable;
     private JScrollPane scrollPane;
-    private ArrayList<Material> list;
-    private ArrayList<Loan>loanList;
     private JLabel jlStudentID;
     private JTextField jtfStudentID;
     private JButton jbCheck;
     private int position;
     private StudentBusiness studentBusiness;
-    private MaterialBusiness materialBusiness;
+    private LoanBusiness loanBusiness;
+    private String ID;
+    private JButton jbtnDevolution;
 
     public JIFDevolution() {
         super("Devolution", false, true, false, false);
@@ -59,6 +61,8 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
     private void init() {
         this.setSize(250, 160);
 
+        this.loanBusiness=new LoanBusiness();
+        
         this.jlStudentID = new JLabel("Student ID");
         this.jtfStudentID = new JTextField();
         this.jbCheck = new JButton("Check");
@@ -73,28 +77,32 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
         this.add(this.jbCheck);
     } // init
 
-    private void initTable(ArrayList<Material> list) {
-        this.setSize(700, 500);
-        Object[][] material = new Object[0][0];
-        String[] columNames1 = {"Code", "Type", "Description", "Loan date", "Return date"};
-        this.dtmModelTable = new DefaultTableModel(material, columNames1);
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getType().equals("Book")) {
-                this.dtmModelTable.addRow(new Object[]{list.get(i).getCode(), list.get(i).getType(),
-                    ((Book)list.get(i)).getName(), "Loan date", "Return date"});
-            }else{
-                this.dtmModelTable.addRow(new Object[]{list.get(i).getCode(), list.get(i).getType(),
-                    ((Audiovisual)list.get(i)).getDescription(), "Loan date", "Return date"});
-            }
-        } // for
-
-        this.jtbTable = new JTable(this.dtmModelTable);
-        this.scrollPane = new JScrollPane(this.jtbTable);
-        this.scrollPane.setBounds(5, 5, 680, 285);
-        this.jtbTable.setSelectionBackground(Color.GREEN);
-        this.add(this.scrollPane);
-        this.jtbTable.addMouseListener(this);
+    private void initTable() {
+        try {
+            this.setSize(700, 500);
+            List<Loan> list=loanBusiness.getPersonLoans(this.ID);
+            Object[][] objects = new Object[0][0];
+            String[] columNames = {"Code", "Type", "Loan date", "Return date"};
+            this.dtmModelTable = new DefaultTableModel(objects, columNames);
+            
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getID().equalsIgnoreCase(this.ID)) {
+                    this.dtmModelTable.addRow(new Object[]{list.get(i).getCode(), list.get(i).getType(),
+                         list.get(i).getLoanDate(),list.get(i).getReturnDate()});
+                }
+            } // for
+            
+            this.jtbTable = new JTable(this.dtmModelTable);
+            this.scrollPane = new JScrollPane(this.jtbTable);
+            this.scrollPane.setBounds(5, 5, 680, 285);
+            this.jtbTable.setSelectionBackground(Color.GREEN);
+            this.add(this.scrollPane);
+            this.jtbTable.addMouseListener(this);
+        } catch (IOException ex) {
+            Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void refresh() {
@@ -120,8 +128,10 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
         if (e.getSource() == this.jbCheck) {
             try {
                 if (this.studentBusiness.validLogin(this.jtfStudentID.getText())) {
+                    this.ID=this.jtfStudentID.getText();
                     JOptionPane.showMessageDialog(rootPane, "Succes");
                     refresh();
+                    initTable();
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Your ID no registered");
                 }

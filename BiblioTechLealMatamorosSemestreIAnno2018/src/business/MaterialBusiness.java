@@ -12,6 +12,7 @@ public class MaterialBusiness {
 
     public MaterialBusiness() {
         this.materialFile = new MaterialFile();
+        
     } // constructor
 
     public void addMaterial(Material material, int type) throws IOException, ClassNotFoundException {
@@ -31,5 +32,9 @@ public class MaterialBusiness {
     public void addBookExixting(int code, int quantity) throws IOException, ClassNotFoundException {
         this.materialFile.addBookExixting(code, quantity);
     } // addBookExixting
+    
+    public boolean update(int code, int type) throws IOException, ClassNotFoundException {
+        return this.materialFile.update(code, type);
+    }
 
 } // fin de la clase

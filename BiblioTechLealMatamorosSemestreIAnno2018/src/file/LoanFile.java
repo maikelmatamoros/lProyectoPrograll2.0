@@ -64,6 +64,7 @@ public class LoanFile {
             ObjectInputStream objetInputStream = new ObjectInputStream(new FileInputStream(myFile));
             Object aux = objetInputStream.readObject();
             loanList = (List<Loan>) aux;
+            System.out.println(loanList.size());
             objetInputStream.close();
         }
 
@@ -72,6 +73,7 @@ public class LoanFile {
                 loanList.remove(i);
             }
         }
+        
         return loanList;
     } // getAllMaterials: retorna lista de todos los materiales
 

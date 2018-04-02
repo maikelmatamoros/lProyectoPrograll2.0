@@ -108,9 +108,10 @@ public class JIFVerify extends JInternalFrame implements ActionListener, MouseLi
                 JOptionPane.showMessageDialog(rootPane, "Succes");
                 this.dispose();
                 JIFLoan jIFLoan = new JIFLoan(this.jTextField.getText());
-                jIFLoan.setVisible(true);
+                
                 MainWindows.jDesktopPane.add(jIFLoan);
-                //refresh(this.change);
+                jIFLoan.setVisible(true);
+//refresh(this.change);
 
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Your ID no registered");

@@ -5,6 +5,7 @@ import domain.Book;
 import domain.Material;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,6 +19,8 @@ public class MaterialFile {
 
     public MaterialFile() {
         this.path = "material.dat";
+        List<ArrayList> materialList = new ArrayList<>();
+
     } // constructor
 
     public void addMaterial(Material material) throws IOException, ClassNotFoundException {
@@ -86,12 +89,31 @@ public class MaterialFile {
         } // for i
         return material;
     } // getMaterial: retorna objeto material segun codigo
+    
+    public void arreglarProblema(File file) throws FileNotFoundException, IOException{
+                List<ArrayList> materialList = new ArrayList<ArrayList>();
+            ArrayList<Book> books = new ArrayList<Book>();
+            ArrayList<Audiovisual> audiovisuals = new ArrayList<Audiovisual>();
+            materialList.add(books);
+            materialList.add(audiovisuals);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
+            objectOutputStream.writeUnshared(materialList);
+            objectOutputStream.close();
+    }
 
     public int getCodeMaterial() throws IOException, ClassNotFoundException {
+        File file = new File(this.path);
+        if (!file.exists()) {
+            arreglarProblema(file);
+        }
         return getBooksAndAudiovisual().get(1).size() + 10000;
     } // getCodeMaterial: retorna codigo de material único
 
     public int getISBNBook() throws IOException, ClassNotFoundException {
+        File file = new File(this.path);
+        if (!file.exists()) {
+            arreglarProblema(file);
+        }
         return getBooksAndAudiovisual().get(0).size() + 100000000;
     } // getCodeMaterial: retorna ISBN ficticio
 

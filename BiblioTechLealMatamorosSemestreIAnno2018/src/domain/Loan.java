@@ -16,20 +16,22 @@ public class Loan implements Serializable{
     private String loanDate;
     private String returnDate;
     private String ID;
+    private String type;
 
     public Loan(){
         this.code =0;
         this.loanDate = "";
         this.returnDate = "";
         this.ID ="";
-    
+        this.type="";
     }
     
-    public Loan(int code, String loanDate,String returnDate, String ID) {
+    public Loan(int code, String loanDate,String returnDate, String ID,String type) {
         this.code = code;
         this.loanDate = loanDate;
         this.returnDate=returnDate;
         this.ID = ID;
+        this.type=type;
     }
 
     public int getCode() {
@@ -64,10 +66,20 @@ public class Loan implements Serializable{
         this.ID = ID;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
-        return "Loan{" + "code=" + code + ", loanDate=" + loanDate + ", returnDate=" + returnDate + ", ID=" + ID + '}';
+        return "Loan{" + "code=" + code + ", loanDate=" + loanDate + ", returnDate=" + returnDate + ", ID=" + ID + ", type=" + type + '}';
     }
+    
+
 
 
     
