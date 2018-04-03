@@ -19,8 +19,6 @@ public class MaterialFile {
 
     public MaterialFile() {
         this.path = "material.dat";
-        List<ArrayList> materialList = new ArrayList<>();
-
     } // constructor
 
     public void addMaterial(Material material) throws IOException, ClassNotFoundException {

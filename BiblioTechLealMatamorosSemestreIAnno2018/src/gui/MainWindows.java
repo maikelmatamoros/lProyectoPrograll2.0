@@ -27,8 +27,7 @@ public class MainWindows extends JFrame implements ActionListener {
         jDesktopPane=new JDesktopPane();
         jDesktopPane.setLayout(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        CustomPanel cp=new CustomPanel(0);
-        
+        CustomPanel cp=new CustomPanel(0);     
         cp.setBounds(0, -90, 800, 800);
         cp.setVisible(true);
         jDesktopPane.add(cp);
