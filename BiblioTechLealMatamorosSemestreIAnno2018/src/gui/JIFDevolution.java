@@ -3,17 +3,13 @@ package gui;
 import business.LoanBusiness;
 import business.MaterialBusiness;
 import business.StudentBusiness;
-import domain.Audiovisual;
-import domain.Book;
 import domain.Loan;
-import domain.Material;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,7 +49,7 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
         } catch (IOException ex) {
             Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        this.materialBusiness=new MaterialBusiness();
         init();
         this.addInternalFrameListener(this);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -155,11 +151,12 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
                 } else {
                     this.materialBusiness.update(this.list.get(this.position).getCode(), 1, 1);
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
+                this.loanBusiness.rewrite(this.list.get(this.position).getCode());
+            } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
             }
+            this.remove(this.scrollPane);
+            initTable();
         }
 
     }// actionPerformed

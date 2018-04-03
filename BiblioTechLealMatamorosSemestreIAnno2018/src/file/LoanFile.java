@@ -77,10 +77,25 @@ public class LoanFile {
         return loanList;
     } // getAllMaterials: retorna lista de todos los materiales
 
-    public void rewrite(List<ArrayList> list) throws IOException, ClassNotFoundException {
-        File file = new File(this.path);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
-        objectOutputStream.writeUnshared(list);
+    public void rewrite(int code) throws IOException, ClassNotFoundException {
+                File myFile = new File(this.path);
+        List<Loan> loanList = new ArrayList<>();
+
+        if (myFile.exists()) {
+            ObjectInputStream objetInputStream = new ObjectInputStream(new FileInputStream(myFile));
+            Object aux = objetInputStream.readObject();
+            loanList = (List<Loan>) aux;
+            objetInputStream.close();
+        }
+
+        for (int i = 0; i < loanList.size(); i++) {
+            if (loanList.get(i).getCode()==code) {
+                loanList.remove(i);
+                break;
+            }
+        }
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(myFile));
+        objectOutputStream.writeUnshared(loanList);
         objectOutputStream.close();
     } // rewrite: Actualiza el archivo
 

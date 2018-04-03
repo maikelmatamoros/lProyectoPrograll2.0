@@ -157,6 +157,7 @@ public class MaterialFile {
     } // update
     
         public boolean updateP(int code, int type) throws IOException, ClassNotFoundException {
+            System.out.println("Entra2");
         List<ArrayList> materials = getBooksAndAudiovisual();
         if (type == 0) {
             ArrayList<Book> listBook = materials.get(0);

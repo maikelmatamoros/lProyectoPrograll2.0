@@ -37,6 +37,7 @@ public class MaterialBusiness {
         if(action==0){
             this.materialFile.updateR(code, type);
         }else{
+            System.out.println("Entra1");
             this.materialFile.updateP(code, type);
         }
     }

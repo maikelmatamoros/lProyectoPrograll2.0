@@ -22,5 +22,9 @@ public class LoanBusiness {
     public List<Loan> getPersonLoans(String ID) throws IOException, ClassNotFoundException {
         return this.loanFile.getPersonLoans(ID);
     }
+        public void rewrite(int code) throws IOException, ClassNotFoundException {
+            this.loanFile.rewrite(code);
+        }
+    
     
 } // fin de la clase
