@@ -14,7 +14,6 @@ import domain.CustomPanel;
 import domain.Loan;
 import domain.Material;
 import java.awt.Color;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -70,7 +69,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
     }
 
     public void init() {
-        this.jComboSelection = new JComboBox(new String[]{"Libros", "Material"});
+        this.jComboSelection = new JComboBox(new String[]{"Book", "Material"});
         this.jDateChooser = new JDateChooser();
         this.jtfText = new JTextField();
         this.jtfCode = new JTextField();
@@ -217,10 +216,10 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
                     JOptionPane.showMessageDialog(rootPane, "Success");
                     if (this.jComboSelection.getSelectedIndex() == 0) {
                         MaterialBusiness materialBusiness = new MaterialBusiness();
-                        materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 0);
+                        materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 0,0);
                     } else {
                         MaterialBusiness materialBusiness = new MaterialBusiness();
-                        materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 1);
+                        materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 1,0);
 
                     }
                 }

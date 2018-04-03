@@ -33,8 +33,12 @@ public class MaterialBusiness {
         this.materialFile.addBookExixting(code, quantity);
     } // addBookExixting
     
-    public boolean update(int code, int type) throws IOException, ClassNotFoundException {
-        return this.materialFile.update(code, type);
+    public void update(int code, int type,int action) throws IOException, ClassNotFoundException {
+        if(action==0){
+            this.materialFile.updateR(code, type);
+        }else{
+            this.materialFile.updateP(code, type);
+        }
     }
 
 } // fin de la clase

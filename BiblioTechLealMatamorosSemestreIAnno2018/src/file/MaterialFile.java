@@ -133,7 +133,7 @@ public class MaterialFile {
         objectOutputStream.close();
     } // rewrite: Actualiza el archivo
 
-    public boolean update(int code, int type) throws IOException, ClassNotFoundException {
+    public boolean updateR(int code, int type) throws IOException, ClassNotFoundException {
         List<ArrayList> materials = getBooksAndAudiovisual();
         if (type == 0) {
             ArrayList<Book> listBook = materials.get(0);
@@ -155,27 +155,28 @@ public class MaterialFile {
         rewrite(materials);
         return true;
     } // update
-//        public boolean update(int code, int type) throws IOException, ClassNotFoundException {
-//        List<ArrayList> materials = getBooksAndAudiovisual();
-//        if (type == 0) {
-//            ArrayList<Book> listBook = materials.get(0);
-//            for (int i = 0; i < materials.get(type).size(); i++) {
-//                if (listBook.get(i).getCode() == code) {
-//                    listBook.get(i).setAmountAvaiable(listBook.get(i).getAmountAvaiable() - 1);
-//                    materials.add(0, listBook);
-//                }
-//            }
-//        } else {
-//            ArrayList<Audiovisual> listAudioV = materials.get(1);
-//            for (int i = 0; i < materials.get(type).size(); i++) {
-//                if (listAudioV.get(i).getCode() == code) {
-//                    listAudioV.get(i).setAvailability(false);
-//                    materials.add(1, listAudioV);
-//                }
-//            }
-//        }
-//        rewrite(materials);
-//        return true;
-//    } // update
+    
+        public boolean updateP(int code, int type) throws IOException, ClassNotFoundException {
+        List<ArrayList> materials = getBooksAndAudiovisual();
+        if (type == 0) {
+            ArrayList<Book> listBook = materials.get(0);
+            for (int i = 0; i < materials.get(type).size(); i++) {
+                if (listBook.get(i).getCode() == code) {
+                    listBook.get(i).setAmountAvaiable(listBook.get(i).getAmountAvaiable() + 1);
+                    materials.add(0, listBook);
+                }
+            }
+        } else {
+            ArrayList<Audiovisual> listAudioV = materials.get(1);
+            for (int i = 0; i < materials.get(type).size(); i++) {
+                if (listAudioV.get(i).getCode() == code) {
+                    listAudioV.get(i).setAvailability(true);
+                    materials.add(1, listAudioV);
+                }
+            }
+        }
+        rewrite(materials);
+        return true;
+    } // update
 
 } // fin de la clase

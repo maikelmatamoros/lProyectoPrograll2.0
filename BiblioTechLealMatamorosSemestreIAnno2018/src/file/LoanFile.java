@@ -45,7 +45,7 @@ public class LoanFile {
         }
 
         for (int i = 0; i < loanList.size(); i++) {
-            if (loanList.get(i).getCode()==code) {
+            if (loanList.get(i).getCode() == code) {
                 loanList.remove(i);
                 ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(myFile));
                 output.writeUnshared(loanList);
@@ -73,8 +73,15 @@ public class LoanFile {
                 loanList.remove(i);
             }
         }
-        
+
         return loanList;
     } // getAllMaterials: retorna lista de todos los materiales
+
+    public void rewrite(List<ArrayList> list) throws IOException, ClassNotFoundException {
+        File file = new File(this.path);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
+        objectOutputStream.writeUnshared(list);
+        objectOutputStream.close();
+    } // rewrite: Actualiza el archivo
 
 } // fin de la clase

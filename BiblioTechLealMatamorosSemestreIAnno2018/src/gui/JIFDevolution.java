@@ -38,15 +38,16 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
     private JButton jbCheck;
     private int position;
     private StudentBusiness studentBusiness;
+    private MaterialBusiness materialBusiness;
     private LoanBusiness loanBusiness;
     private String ID;
     private JButton jbtnDevolution;
+    private List<Loan> list;
 
     public JIFDevolution() {
         super("Devolution", false, true, false, false);
         this.setLocation(20, 40);
         this.setLayout(null);
-
         try {
             this.studentBusiness = new StudentBusiness();
         } catch (IOException ex) {
@@ -61,37 +62,44 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
     private void init() {
         this.setSize(250, 160);
 
-        this.loanBusiness=new LoanBusiness();
-        
+        this.loanBusiness = new LoanBusiness();
+
         this.jlStudentID = new JLabel("Student ID");
         this.jtfStudentID = new JTextField();
         this.jbCheck = new JButton("Check");
+        
         this.jbCheck.addActionListener(this);
+        this.jbtnDevolution = new JButton("Devolution");
 
         this.jlStudentID.setBounds(30, 20, 120, 15);
         this.jtfStudentID.setBounds(30, 40, 170, 25);
         this.jbCheck.setBounds(30, 70, 90, 30);
+        this.jbtnDevolution.setBounds(300, 300, 100, 30);
+
+        this.jbtnDevolution.setVisible(false);
+        this.jbtnDevolution.addActionListener(this);
 
         this.add(this.jlStudentID);
         this.add(this.jtfStudentID);
         this.add(this.jbCheck);
+        this.add(this.jbtnDevolution);
     } // init
 
     private void initTable() {
         try {
             this.setSize(700, 500);
-            List<Loan> list=loanBusiness.getPersonLoans(this.ID);
+            this.list = loanBusiness.getPersonLoans(this.ID);
             Object[][] objects = new Object[0][0];
             String[] columNames = {"Code", "Type", "Loan date", "Return date"};
             this.dtmModelTable = new DefaultTableModel(objects, columNames);
-            
+
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getID().equalsIgnoreCase(this.ID)) {
                     this.dtmModelTable.addRow(new Object[]{list.get(i).getCode(), list.get(i).getType(),
-                         list.get(i).getLoanDate(),list.get(i).getReturnDate()});
+                        list.get(i).getLoanDate(), list.get(i).getReturnDate()});
                 }
             } // for
-            
+
             this.jtbTable = new JTable(this.dtmModelTable);
             this.scrollPane = new JScrollPane(this.jtbTable);
             this.scrollPane.setBounds(5, 5, 680, 285);
@@ -128,18 +136,33 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
         if (e.getSource() == this.jbCheck) {
             try {
                 if (this.studentBusiness.validLogin(this.jtfStudentID.getText())) {
-                    this.ID=this.jtfStudentID.getText();
+                    this.ID = this.jtfStudentID.getText();
                     JOptionPane.showMessageDialog(rootPane, "Succes");
                     refresh();
                     initTable();
+                    this.jtbTable.addMouseListener(this);
+                    this.jbtnDevolution.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Your ID no registered");
                 }
             } catch (IOException ex) {
                 Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else if (e.getSource() == this.jbtnDevolution) {
+            try {
+                if (this.list.get(this.position).getType().equalsIgnoreCase("Book")) {
+                    this.materialBusiness.update(this.list.get(this.position).getCode(), 0, 1);
+                } else {
+                    this.materialBusiness.update(this.list.get(this.position).getCode(), 1, 1);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    } // actionPerformed
+
+    }// actionPerformed
 
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
@@ -172,6 +195,7 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        this.position = this.jtbTable.getSelectedRow();
     }
 
     @Override
