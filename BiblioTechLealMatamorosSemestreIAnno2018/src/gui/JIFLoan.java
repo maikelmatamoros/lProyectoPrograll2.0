@@ -155,7 +155,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                initTableBook(list1);
+                initTableBook(list1,format);
                 if (this.jtfCode1.isShowing()) {
                     this.remove(this.jtfCode1);
                 }
@@ -171,12 +171,10 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
                 clearTextFields();
                 try {
                     this.list2 = materialBusiness.getBooksAndAudiovisual().get(1);
-                } catch (IOException ex) {
-                    Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
+                } catch (IOException | ClassNotFoundException ex) {
                     Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                initTableMaterial(list2);
+                initTableMaterial(list2,format);
                 if (this.jlblText.isShowing()) {
                     this.jtfText.setVisible(false);
                     this.jlblText.setVisible(false);
@@ -210,7 +208,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
             String dia = Integer.toString(this.jDateChooser.getCalendar().get(Calendar.DAY_OF_MONTH));
             String mes = Integer.toString(this.jDateChooser.getCalendar().get(Calendar.MONTH) + 1);
             String year = Integer.toString(this.jDateChooser.getCalendar().get(Calendar.YEAR));
-
+            System.out.println(this.rowObjetIndex);
             try {
                 if (loanBusiness.addLoan(new Loan(this.subList.get(this.rowObjetIndex).getCode(), date, year + "-" + mes + "-" + dia, this.studenID,this.jComboSelection.getSelectedItem().toString()))) {
                     JOptionPane.showMessageDialog(rootPane, "Success");
@@ -228,18 +226,20 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
         }
     }
 
     public void initTableBook(ArrayList<Book> list, String subString, String format, int var) {
         this.remove(this.scrollPane);
         int tam = subString.length();
+        this.subList=new ArrayList<>();
         Object[][] vehicles = new Object[0][0];
         String[] columNames1 = {"Name", "Author", "Year", "Language", "Theme"};
         this.dtmModelTable = new DefaultTableModel(vehicles, columNames1);
         for (int i = 0; i < list.size(); i++) {
-            if (tam <= list.get(i).getName().length() && list.get(i).getFormat().equals(format) && var == 0 && list.get(i).getName().substring(0, subString.length()).equalsIgnoreCase(subString)) {
+            if (tam <= list.get(i).getName().length()&&list.get(i).getAmountAvaiable()>0 && list.get(i).getFormat().equals(format) && var == 0 && 
+            list.get(i).getName().substring(0, subString.length()).equalsIgnoreCase(subString)) {
                 this.subList.add(list.get(i));
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getName(),
                     list.get(i).getAuthor(), list.get(i).getYear(), list.get(i).getLanguage(), list.get(i).getTheme()});
@@ -262,6 +262,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
 
         this.add(scrollPane);
 
+                 
         this.jtbTable.addMouseListener(
                 this);
     } // inicializa el modelo de la tabla cargando los valores del archivo
@@ -272,7 +273,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         String[] columNames1 = {"Name", "Author", "Year", "Language", "Theme"};
         this.dtmModelTable = new DefaultTableModel(vehicles, columNames1);
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getFormat().equalsIgnoreCase(format)) {
+            if (list.get(i).getFormat().equalsIgnoreCase(format)&&list.get(i).getAmountAvaiable()>0) {
                 //System.out.println("Entra");
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getName(),
                     list.get(i).getAuthor(), list.get(i).getYear(), list.get(i).getLanguage(), list.get(i).getTheme()});
@@ -286,27 +287,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
 
         this.add(scrollPane);
         this.jtbTable.addMouseListener(this);
-    } // inicializa el modelo de la tabla cargando los valores del archivo
-
-    public void initTableBook(ArrayList<Book> list) {
-        this.remove(this.scrollPane);
-        Object[][] vehicles = new Object[0][0];
-        String[] columNames1 = {"Name", "Author", "Year", "Language", "Theme"};
-        this.dtmModelTable = new DefaultTableModel(vehicles, columNames1);
-        for (int i = 0; i < list.size(); i++) {
-            this.dtmModelTable.addRow(new Object[]{list.get(i).getName(),
-                list.get(i).getAuthor(), list.get(i).getYear(), list.get(i).getLanguage(), list.get(i).getTheme()});
-
-        }//for
-
-        this.jtbTable = new JTable(this.dtmModelTable);
-        this.scrollPane = new JScrollPane(this.jtbTable);
-        scrollPane.setBounds(10, 80, 400, 285);
-        this.jtbTable.setSelectionBackground(Color.GREEN);
-
-        this.add(scrollPane);
-        this.jtbTable.addMouseListener(this);
-    } // inicializa el modelo de la tabla cargando los valores del archivo
+    } // inicializa el modelo de la tabla cargando los valores del archivo    
 
     public void initTableMaterial(ArrayList<Audiovisual> list, String subString, String format) {
         this.remove(this.scrollPane);
@@ -353,26 +334,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.jtbTable.addMouseListener(this);
     } // inicializa el modelo de la tabla cargando los valores del archivo
 
-    public void initTableMaterial(ArrayList<Audiovisual> list) {
-        this.remove(this.scrollPane);
 
-        Object[][] vehicles = new Object[0][0];
-        String[] columNames1 = {"Type", "ID", "Description", "Code"};
-        this.dtmModelTable = new DefaultTableModel(vehicles, columNames1);
-        for (int i = 0; i < list.size(); i++) {
-
-            this.dtmModelTable.addRow(new Object[]{list.get(i).getType(),
-                list.get(i).getId(), list.get(i).getDescription(), list.get(i).getCode()});
-
-        }//for
-
-        this.jtbTable = new JTable(this.dtmModelTable);
-        this.scrollPane = new JScrollPane(this.jtbTable);
-        scrollPane.setBounds(10, 80, 400, 285);
-        this.jtbTable.setSelectionBackground(Color.GREEN);
-        this.add(scrollPane);
-        this.jtbTable.addMouseListener(this);
-    } // inicializa el modelo de la tabla cargando los valores del archivo
     private int rowObjetIndex;
 
     @Override
