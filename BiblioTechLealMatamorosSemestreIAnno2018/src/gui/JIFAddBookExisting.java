@@ -2,7 +2,9 @@ package gui;
 
 import business.MaterialBusiness;
 import domain.Book;
+import domain.CustomPanel;
 import domain.Material;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -18,6 +20,7 @@ public class JIFAddBookExisting extends javax.swing.JInternalFrame implements In
 
     public JIFAddBookExisting() {
         this.materialBusiness = new MaterialBusiness();
+        this.setContentPane(new CustomPanel(1,0,0,650,350));
         this.setLocation(20, 40);
         this.addInternalFrameListener(this);
         initComponents();
@@ -174,10 +177,12 @@ public class JIFAddBookExisting extends javax.swing.JInternalFrame implements In
                     book.getFormat(), book.getAmountAvaiable()});
             } // for
             this.jtBooks.setModel(dtmModelTable);
+            this.jtBooks.setBackground(new Color(156, 156, 255));
+            jScrollPane1.getViewport().setBackground(new Color(203, 203, 255));
             this.jtBooks.setEnabled(false);
             jtBooks.getColumnModel().getColumn(0).setPreferredWidth(10);
             jtBooks.getColumnModel().getColumn(2).setPreferredWidth(10);
-            jtBooks.getColumnModel().getColumn(3).setPreferredWidth(10);
+            jtBooks.getColumnModel().getColumn(3).setPreferredWidth(40);
         } // initTable
         catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(JIFAddBookExisting.class.getName()).log(Level.SEVERE, null, ex);

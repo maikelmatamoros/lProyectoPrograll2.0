@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import business.LoanBusiness;
@@ -36,10 +31,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author maikel
- */
 public class JIFLoan extends JInternalFrame implements ActionListener, MouseListener, KeyListener {
 
     private JComboBox jComboSelection, jComboBox;
@@ -59,14 +50,13 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
     public JIFLoan(String id) {
         super("Loan", false, true, false, false);
         this.setSize(700, 500);
-        this.setContentPane(new CustomPanel(1));
+        this.setContentPane(new CustomPanel(1,0,0,700,500));
         this.setLayout(null);
         this.setLocation(30, 30);
         this.subList = new ArrayList<>();
         this.studenID = id;
         init();
-
-    }
+    } // constructor
 
     public void init() {
         this.jComboSelection = new JComboBox(new String[]{"Book", "Material"});
@@ -123,7 +113,6 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         
             initTableBook(list1, jComboBox.getSelectedItem().toString());
         
-
         this.add(this.jdcLoanDate);
         this.add(this.jdcReturnDate);
         this.add(this.jComboSelection);
@@ -136,7 +125,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.add(this.jbtnLoan);
         this.add(this.jlblLoanDate);
         this.add(this.jlblReturnLoan);
-    }
+    } // init
 
     public void clearTextFields() {
         this.name = "";
@@ -144,8 +133,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.jtfCode.setText("");
         this.jtfText.setText("");
         this.jtfCode1.setText("");
-
-    }
+    } // clearTextFields
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -244,7 +232,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
             }
             
         }
-    }
+    } // actionPerformed
 
     public void initTableBook(ArrayList<Book> list, String subString, String format, int var) {
         this.remove(this.scrollPane);
@@ -445,4 +433,4 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
 
     }
 
-}
+} // fin de la clase
