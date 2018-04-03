@@ -10,6 +10,7 @@ import business.MaterialBusiness;
 import com.toedter.calendar.JDateChooser;
 import domain.Audiovisual;
 import domain.Book;
+import domain.CustomPanel;
 import domain.Loan;
 import domain.Material;
 import java.awt.Color;
@@ -59,6 +60,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
     public JIFLoan(String id) {
         super("Loan", false, true, false, false);
         this.setSize(700, 500);
+        this.setContentPane(new CustomPanel(1));
         this.setLayout(null);
         this.setLocation(30, 30);
         this.subList = new ArrayList<>();

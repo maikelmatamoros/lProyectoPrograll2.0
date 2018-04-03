@@ -25,7 +25,7 @@ public class CustomPanel extends JPanel{
  
     @Override
     public void paint(Graphics g){
-        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+        g.drawImage(image, -30, 0, 800, 600, this);
         setOpaque(false);
         super.paint(g);
     }
