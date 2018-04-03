@@ -208,17 +208,17 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
             String dia = Integer.toString(this.jDateChooser.getCalendar().get(Calendar.DAY_OF_MONTH));
             String mes = Integer.toString(this.jDateChooser.getCalendar().get(Calendar.MONTH) + 1);
             String year = Integer.toString(this.jDateChooser.getCalendar().get(Calendar.YEAR));
-            System.out.println(this.rowObjetIndex);
             try {
                 if (loanBusiness.addLoan(new Loan(this.subList.get(this.rowObjetIndex).getCode(), date, year + "-" + mes + "-" + dia, this.studenID,this.jComboSelection.getSelectedItem().toString()))) {
                     JOptionPane.showMessageDialog(rootPane, "Success");
                     if (this.jComboSelection.getSelectedIndex() == 0) {
                         MaterialBusiness materialBusiness = new MaterialBusiness();
                         materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 0,0);
+                        initTableBook(list1, format);
                     } else {
                         MaterialBusiness materialBusiness = new MaterialBusiness();
                         materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 1,0);
-
+                        initTableMaterial(list2, format);
                     }
                 }
             } catch (IOException ex) {
@@ -240,10 +240,12 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         for (int i = 0; i < list.size(); i++) {
             if (tam <= list.get(i).getName().length()&&list.get(i).getAmountAvaiable()>0 && list.get(i).getFormat().equals(format) && var == 0 && 
             list.get(i).getName().substring(0, subString.length()).equalsIgnoreCase(subString)) {
+                this.subList.clear();
                 this.subList.add(list.get(i));
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getName(),
                     list.get(i).getAuthor(), list.get(i).getYear(), list.get(i).getLanguage(), list.get(i).getTheme()});
             } else if (list.get(i).getFormat().equals(format) && tam <= 9 && var == 1 && String.valueOf(list.get(i).getCode()).substring(0, subString.length()).equalsIgnoreCase(subString)) {
+                this.subList.clear();
                 this.subList.add(list.get(i));
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getName(),
                     list.get(i).getAuthor(), list.get(i).getYear(), list.get(i).getLanguage(), list.get(i).getTheme()});
@@ -274,7 +276,8 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.dtmModelTable = new DefaultTableModel(vehicles, columNames1);
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getFormat().equalsIgnoreCase(format)&&list.get(i).getAmountAvaiable()>0) {
-                //System.out.println("Entra");
+                this.subList.clear();
+                this.subList.add(list.get(i));
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getName(),
                     list.get(i).getAuthor(), list.get(i).getYear(), list.get(i).getLanguage(), list.get(i).getTheme()});
             }
@@ -297,8 +300,8 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.dtmModelTable = new DefaultTableModel(vehicles, columNames1);
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getType().equals(format)
-                    && subString.length() <= 5 && String.valueOf(this.list2.get(i).getCode()).substring(0, subString.length()).equalsIgnoreCase(subString)) {
-                //System.out.println("Entra");
+                    && list.get(i).isAvailability()&& subString.length() <= 5 && String.valueOf(this.list2.get(i).getCode()).substring(0, subString.length()).equalsIgnoreCase(subString)) {
+                this.subList.add(list.get(i));
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getType(),
                     list.get(i).getId(), list.get(i).getDescription(), list.get(i).getCode()});
             }
@@ -319,8 +322,9 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         String[] columNames1 = {"Type", "ID", "Description", "Code"};
         this.dtmModelTable = new DefaultTableModel(vehicles, columNames1);
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getType().equals(format)) {
-                //System.out.println("Entra");
+            if (list.get(i).getType().equals(format) && list.get(i).isAvailability()) {
+                this.subList.clear();
+                this.subList.add(list.get(i));
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getType(),
                     list.get(i).getId(), list.get(i).getDescription(), list.get(i).getCode()});
             }

@@ -78,7 +78,7 @@ public class LoanFile {
     } // getAllMaterials: retorna lista de todos los materiales
 
     public void rewrite(int code) throws IOException, ClassNotFoundException {
-                File myFile = new File(this.path);
+        File myFile = new File(this.path);
         List<Loan> loanList = new ArrayList<>();
 
         if (myFile.exists()) {
@@ -89,7 +89,7 @@ public class LoanFile {
         }
 
         for (int i = 0; i < loanList.size(); i++) {
-            if (loanList.get(i).getCode()==code) {
+            if (loanList.get(i).getCode() == code) {
                 loanList.remove(i);
                 break;
             }
