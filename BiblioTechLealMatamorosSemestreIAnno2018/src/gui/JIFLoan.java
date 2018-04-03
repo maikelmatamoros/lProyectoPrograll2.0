@@ -44,7 +44,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
 
     private JComboBox jComboSelection, jComboBox;
     private JButton jbtnLoan;
-    private JDateChooser jDateChooser;
+    private JDateChooser jdcLoanDate,jdcReturnDate;
     private JTable jtbTable;
     private DefaultTableModel dtmModelTable;
     private JScrollPane scrollPane;
@@ -53,7 +53,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
     private ArrayList<Audiovisual> list2;
     private String format;
     private JTextField jtfText, jtfCode, jtfCode1;
-    private JLabel jlblText, jlblCode;
+    private JLabel jlblText, jlblCode,jlblLoanDate,jlblReturnLoan;
     private String studenID;
 
     public JIFLoan(String id) {
@@ -70,22 +70,29 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
 
     public void init() {
         this.jComboSelection = new JComboBox(new String[]{"Book", "Material"});
-        this.jDateChooser = new JDateChooser();
+        this.jdcLoanDate = new JDateChooser();
+        this.jdcReturnDate = new JDateChooser();
         this.jtfText = new JTextField();
         this.jtfCode = new JTextField();
         this.jtfCode1 = new JTextField();
         this.jComboBox = new JComboBox();
         this.jlblCode = new JLabel("Insert Code");
         this.jlblText = new JLabel("Insert Name");
-        this.jbtnLoan = new JButton("Loan");
+        this.jbtnLoan = new JButton("OK");
+        this.jlblLoanDate=new JLabel("Loan Date");
+        this.jlblReturnLoan=new JLabel("Return Date");
 
         this.jComboSelection.setBounds(30, 30, 100, 30);
-        this.jDateChooser.setBounds(570, 130, 100, 30);
+        this.jdcLoanDate.setBounds(555, 130, 100, 30);
+        this.jdcReturnDate.setBounds(445, 130, 100, 30);
         this.jtfText.setBounds(555, 60, 100, 30);
         this.jtfCode.setBounds(445, 60, 100, 30);
         this.jtfCode1.setBounds(445, 60, 100, 30);
         this.jlblCode.setBounds(450, 20, 100, 30);
         this.jlblText.setBounds(555, 20, 100, 30);
+        this.jlblLoanDate.setBounds(450, 90, 100, 30);
+        this.jlblReturnLoan.setBounds(555, 90, 100, 30);
+        
         this.jbtnLoan.setBounds(460, 200, 100, 40);
 
         this.jtfText.setVisible(true);
@@ -117,7 +124,8 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
             initTableBook(list1, jComboBox.getSelectedItem().toString());
         
 
-        this.add(this.jDateChooser);
+        this.add(this.jdcLoanDate);
+        this.add(this.jdcReturnDate);
         this.add(this.jComboSelection);
         this.add(this.jtfText);
         this.add(this.jtfCode);
@@ -126,6 +134,8 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.add(this.jlblText);
         this.add(this.jtfCode1);
         this.add(this.jbtnLoan);
+        this.add(this.jlblLoanDate);
+        this.add(this.jlblReturnLoan);
     }
 
     public void clearTextFields() {
@@ -203,21 +213,27 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         } else if (e.getSource() == this.jbtnLoan) {
             
             LoanBusiness loanBusiness = new LoanBusiness();
-            Calendar fecha = GregorianCalendar.getInstance();
-            String date = fecha.get(Calendar.YEAR) + "-" + (fecha.get(Calendar.MONTH) + 1) + "-" + fecha.get(Calendar.DATE);
-            String dia = Integer.toString(this.jDateChooser.getCalendar().get(Calendar.DAY_OF_MONTH));
-            String mes = Integer.toString(this.jDateChooser.getCalendar().get(Calendar.MONTH) + 1);
-            String year = Integer.toString(this.jDateChooser.getCalendar().get(Calendar.YEAR));
+            
+            String dayLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.DAY_OF_MONTH));
+            String monthLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.MONTH) + 1);
+            String yearLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.YEAR));
+            String dayReturn = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.DAY_OF_MONTH));
+            String monthReturn = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.MONTH) + 1);
+            String yearReturn = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.YEAR));
+            String loanDate=yearLoan+"-"+monthLoan+"-"+dayLoan;
+            String returnDate =yearReturn+"-"+monthReturn+"-"+dayReturn;
             try {
-                if (loanBusiness.addLoan(new Loan(this.subList.get(this.rowObjetIndex).getCode(), date, year + "-" + mes + "-" + dia, this.studenID,this.jComboSelection.getSelectedItem().toString()))) {
+                if (loanBusiness.addLoan(new Loan(this.subList.get(this.rowObjetIndex).getCode(), loanDate, returnDate, this.studenID,this.jComboSelection.getSelectedItem().toString()))) {
                     JOptionPane.showMessageDialog(rootPane, "Success");
                     if (this.jComboSelection.getSelectedIndex() == 0) {
                         MaterialBusiness materialBusiness = new MaterialBusiness();
                         materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 0,0);
+                        list1=materialBusiness.getBooksAndAudiovisual().get(0);
                         initTableBook(list1, format);
                     } else {
                         MaterialBusiness materialBusiness = new MaterialBusiness();
                         materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 1,0);
+                        list2=materialBusiness.getBooksAndAudiovisual().get(1);
                         initTableMaterial(list2, format);
                     }
                 }
