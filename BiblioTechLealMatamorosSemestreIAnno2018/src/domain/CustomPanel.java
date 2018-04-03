@@ -17,7 +17,7 @@ public class CustomPanel extends JPanel{
             this.url = getClass().getResource("/assets/fondo.jpeg");
         }else{
             System.out.println("Entra");
-            this.url = getClass().getResource("/assets/main.jpg");
+            this.url = getClass().getResource("/assets/main.jpeg");
         }
         
         this.image = new ImageIcon(url).getImage();
