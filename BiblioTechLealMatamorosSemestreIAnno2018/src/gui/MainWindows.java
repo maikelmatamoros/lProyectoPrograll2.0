@@ -1,6 +1,7 @@
 package gui;
 
 import domain.CustomPanel;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JDesktopPane;
@@ -32,8 +33,6 @@ public class MainWindows extends JFrame implements ActionListener {
         cp.setBounds(0, -90, 800, 800);
         cp.setVisible(true);
         jDesktopPane.add(cp);
-//        this.setContentPane(new CustomPanel(0));
-
         this.setSize(800, 600);
         init();
         this.add(jDesktopPane);
@@ -99,6 +98,12 @@ public class MainWindows extends JFrame implements ActionListener {
         this.jMenuBar.add(this.jmLoans);
         this.jMenuBar.add(this.jmStudent);
         this.jMenuBar.add(this.jmMaterial);
+        
+        this.jMenuBar.setBackground(new Color(0, 51, 102));
+        this.jmLoans.setForeground(new Color(192, 192, 192));
+        this.jmStudent.setForeground(new Color(192, 192, 192));
+        this.jmMaterial.setForeground(new Color(192, 192, 192));
+        
         this.setJMenuBar(this.jMenuBar);
     } // init
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import business.StudentBusiness;
@@ -21,10 +16,6 @@ import javax.swing.JTextField;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
-/**
- *
- * @author maikel
- */
 public class JIFDebtPay extends JInternalFrame implements ActionListener,InternalFrameListener{
 
     private JButton jbtnPay;
@@ -46,23 +37,29 @@ public class JIFDebtPay extends JInternalFrame implements ActionListener,Interna
         init();
         this.addInternalFrameListener(this);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
     } // constructor
 
     public void init() {
-        this.setSize(200, 200);
+        this.setSize(240, 170);
         this.jbtnPay = new JButton("Pay");
         this.jtfID = new JTextField();
         this.jlblID = new JLabel("ID");
 
-        this.jbtnPay.setBounds(50, 100, 70, 30);
-        this.jlblID.setBounds(50, 20, 100, 25);
-        this.jtfID.setBounds(100, 20, 70, 30);
+        this.jbtnPay.setBounds(80, 70, 70, 30);
+        this.jlblID.setBounds(35, 20, 50, 30);
+        this.jtfID.setBounds(70, 20, 120, 25);
+        
+        this.jbtnPay.setFont(new java.awt.Font("DejaVu Sans Condensed", 3, 15));
+        this.jbtnPay.setForeground(new java.awt.Color(19, 135, 196));
+        this.jbtnPay.setBorderPainted(false);
+        this.jbtnPay.setFocusable(false);
+        
         this.jbtnPay.addActionListener(this);
+        
         this.add(this.jlblID);
         this.add(this.jtfID);
         this.add(this.jbtnPay);
-    }
+    } // init
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -83,12 +80,10 @@ public class JIFDebtPay extends JInternalFrame implements ActionListener,Interna
         }else{
             JOptionPane.showMessageDialog(rootPane, "The space for ID is requerided");
         }
-
-    }
+    } // actionPerformed
 
     @Override
-    public void internalFrameOpened(InternalFrameEvent e) {
-        
+    public void internalFrameOpened(InternalFrameEvent e) {     
     }
 
     @Override
@@ -97,27 +92,23 @@ public class JIFDebtPay extends JInternalFrame implements ActionListener,Interna
     }
 
     @Override
-    public void internalFrameClosed(InternalFrameEvent e) {
-        
+    public void internalFrameClosed(InternalFrameEvent e) {    
     }
 
     @Override
     public void internalFrameIconified(InternalFrameEvent e) {
-    
     }
 
     @Override
     public void internalFrameDeiconified(InternalFrameEvent e) {
-    
     }
 
     @Override
     public void internalFrameActivated(InternalFrameEvent e) {
-    
     }
 
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) {
-    
     }
-}
+    
+} // fin de la clases
