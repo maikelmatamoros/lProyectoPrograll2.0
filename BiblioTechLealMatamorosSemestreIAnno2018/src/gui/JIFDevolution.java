@@ -78,7 +78,7 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
         this.jtfPenaltyFee = new JTextField();
         this.jbCheck = new JButton("Check");
         this.jlblCurrentDate = new JLabel("Current Date:");
-        
+
         this.jlStudentID.setBackground(Color.BLACK);
         this.jlblPenaltyFee.setBackground(Color.BLACK);
         this.jlblCurrentDate.setBackground(Color.BLACK);
@@ -100,12 +100,12 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
         this.jlblPenaltyFee.setVisible(false);
         this.jtfPenaltyFee.setVisible(false);
         this.jtfPenaltyFee.setEditable(false);
-        
+
         this.jbCheck.setFont(new java.awt.Font("DejaVu Sans Condensed", 3, 15));
         this.jbCheck.setForeground(new java.awt.Color(19, 135, 196));
         this.jbCheck.setBorderPainted(false);
         this.jbCheck.setFocusable(false);
-        
+
         this.jbtnDevolution.setFont(new java.awt.Font("DejaVu Sans Condensed", 3, 15));
         this.jbtnDevolution.setForeground(new java.awt.Color(19, 135, 196));
         this.jbtnDevolution.setBorderPainted(false);
@@ -181,36 +181,46 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
                 Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (e.getSource() == this.jbtnDevolution) {
-            try {
-                if (this.list.get(this.position).getType().equalsIgnoreCase("Book")) {
-                    this.materialBusiness.update(this.list.get(this.position).getCode(), 0, 1);
+
+            if (this.list.isEmpty()) {
+                JOptionPane.showMessageDialog(rootPane, "You do not have any outstanding loans");
+
+            } else {
+                try {
+                    if (this.list.get(this.position).getType().equalsIgnoreCase("Book")) {
+                        this.materialBusiness.update(this.list.get(this.position).getCode(), 0, 1);
+                    } else {
+                        this.materialBusiness.update(this.list.get(this.position).getCode(), 1, 1);
+                    }
+                    this.loanBusiness.rewrite(this.list.get(this.position).getCode());
+                } catch (IOException | ClassNotFoundException ex) {
+                    Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                if (this.jdcCurrentDate.getDate() == null) {
+                    JOptionPane.showMessageDialog(rootPane, "verify that the current date has been selected");
                 } else {
-                    this.materialBusiness.update(this.list.get(this.position).getCode(), 1, 1);
+                    String dia = Integer.toString(this.jdcCurrentDate.getCalendar().get(Calendar.DAY_OF_MONTH));
+                    String mes = Integer.toString(this.jdcCurrentDate.getCalendar().get(Calendar.MONTH) + 1);
+                    String year = Integer.toString(this.jdcCurrentDate.getCalendar().get(Calendar.YEAR));
+                    try {
+                        Date currentDate = dateFormat.parse(year + "-" + mes + "-" + dia);
+                        Date returnDate = dateFormat.parse(this.list.get(position).getReturnDate());
+                        int dias = Math.abs((int) ((returnDate.getTime() - currentDate.getTime()) / 86400000));
+
+                        if (currentDate.compareTo(returnDate) > 0) {
+
+                            student.setPenalty(student.getPenalty() + (dias * this.amount));
+                            this.jtfPenaltyFee.setText(Integer.toString(student.getPenalty()));
+                        }
+                    } catch (ParseException ex) {
+                        Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    this.remove(this.scrollPane);
+                    initTable();
                 }
-                this.loanBusiness.rewrite(this.list.get(this.position).getCode());
-            } catch (IOException | ClassNotFoundException ex) {
-                Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
+
             }
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            
-            String dia = Integer.toString(this.jdcCurrentDate.getCalendar().get(Calendar.DAY_OF_MONTH));
-            String mes = Integer.toString(this.jdcCurrentDate.getCalendar().get(Calendar.MONTH) + 1);
-            String year = Integer.toString(this.jdcCurrentDate.getCalendar().get(Calendar.YEAR));
-            try {
-                Date currentDate=dateFormat.parse(year+"-"+mes+"-"+dia);
-                Date returnDate=dateFormat.parse(this.list.get(position).getReturnDate());
-                int dias = Math.abs((int) ((returnDate.getTime() - currentDate.getTime()) / 86400000));
-                
-                if(currentDate.compareTo(returnDate)>0){
-                    
-                    student.setPenalty(student.getPenalty()+(dias*this.amount));
-                    this.jtfPenaltyFee.setText(Integer.toString(student.getPenalty()));
-                }
-            } catch (ParseException ex) {
-                Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            this.remove(this.scrollPane);
-            initTable();
         }
 
     }// actionPerformed
@@ -222,7 +232,10 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
     @Override
     public void internalFrameClosing(InternalFrameEvent e) {
         try {
-            studentBusiness.updateRecord(student, this.studentPos);
+            if (student!=null) {
+                studentBusiness.updateRecord(student, this.studentPos);
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
         }
