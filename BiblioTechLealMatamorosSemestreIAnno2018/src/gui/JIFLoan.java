@@ -47,7 +47,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
     private String format;
     private JTextField jtfText, jtfCode, jtfCode1;
     private JLabel jlblText, jlblCode, jlblLoanDate, jlblReturnLoan;
-    private String studenID;
+    private String studenID, loanDate, returnDate;
     private MaterialBusiness materialBusiness;
     private int rowObjetIndex;
     private String name = "";
@@ -217,37 +217,53 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
 
         } else if (e.getSource() == this.jbtnOk) {
             //agarra las fechas de los JDateChooser y las guarda en variables y luego guarda los pedidos
-            LoanBusiness loanBusiness = new LoanBusiness();
-            String dayLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.DAY_OF_MONTH));
-            String monthLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.MONTH) + 1);
-            String yearLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.YEAR));
-            String dayReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.DAY_OF_MONTH));
-            String monthReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.MONTH) + 1);
-            String yearReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.YEAR));
-            String loanDate = yearLoan + "-" + monthLoan + "-" + dayLoan;
-            String returnDate = yearReturn + "-" + monthReturn + "-" + dayReturn;
-            try {
-                if (loanBusiness.addLoan(new Loan(this.subList.get(this.rowObjetIndex).getCode(), loanDate, returnDate, this.studenID, this.jComboSelection.getSelectedItem().toString()))) {
-                    JOptionPane.showMessageDialog(rootPane, "Success");
-                    //recarga las tablas por si algún pedido dejá sin un producto a la biblioteca
-                    if (this.jComboSelection.getSelectedIndex() == 0) {
+            if (this.format.equalsIgnoreCase("Digital")) {
+                JOptionPane.showMessageDialog(rootPane, "Download Complete");
+            } else {
+                LoanBusiness loanBusiness = new LoanBusiness();
+                if (this.jdcLoanDate.getCalendar() != null) {
+                    String dayLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.DAY_OF_MONTH));
+                    String monthLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.MONTH) + 1);
+                    String yearLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.YEAR));
+                    this.loanDate = yearLoan + "-" + monthLoan + "-" + dayLoan;
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Verify that the loan date was selected");
+                }
+                if (this.jdcReturnDate.getCalendar() != null) {
+                    String dayReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.DAY_OF_MONTH));
+                    String monthReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.MONTH) + 1);
+                    String yearReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.YEAR));
+                    this.returnDate = yearReturn + "-" + monthReturn + "-" + dayReturn;
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Verify that the return date was selected");
+                }
+                if (this.loanDate != null && this.returnDate != null) {
+                    try {
+                        if (loanBusiness.addLoan(new Loan(this.subList.get(this.rowObjetIndex).getCode(), loanDate, returnDate, this.studenID, this.jComboSelection.getSelectedItem().toString()))) {
+                            JOptionPane.showMessageDialog(rootPane, "Success");
+                            //recarga las tablas por si algún pedido dejá sin un producto a la biblioteca
+                            if (this.jComboSelection.getSelectedIndex() == 0) {
 
-                        this.materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 0, 0);
-                        list1 = this.materialBusiness.getBooksAndAudiovisual().get(0);
-                        initTableBook(list1, format);
-                    } else {
+                                this.materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 0, 0);
+                                list1 = this.materialBusiness.getBooksAndAudiovisual().get(0);
+                                initTableBook(list1, format);
+                            } else {
 
-                        this.materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 1, 0);
-                        list2 = this.materialBusiness.getBooksAndAudiovisual().get(1);
-                        initTableMaterial(list2, format);
+                                this.materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 1, 0);
+                                list2 = this.materialBusiness.getBooksAndAudiovisual().get(1);
+                                initTableMaterial(list2, format);
+                            }
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            clearTextFields();
+            this.jdcLoanDate.setDate(null);
+            this.jdcReturnDate.setDate(null);
         }
     } // actionPerformed
 
@@ -385,6 +401,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
     public void mouseExited(MouseEvent e) {
 
     }
+
     //listeners para detectar las teclas e ir actualizando las tablas con las palabras formadas
     @Override
     public void keyTyped(KeyEvent e) {

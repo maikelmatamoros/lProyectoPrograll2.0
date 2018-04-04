@@ -1,10 +1,8 @@
 package gui;
 
 import domain.CustomPanel;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -17,11 +15,11 @@ public class MainWindows extends JFrame implements ActionListener {
     private JMenuBar jMenuBar;
     private JMenu jmStudent, jmLoans, jmMaterial;
     private JInternalFrame jifNewStudent, jifShowAllStudents, jifStudentUpdate, jifStudentDelete,
-            jifLoanApplication, jifNewMaterial, jifAddBookExisting, jifDevolution, jifAllMaterials;
+            jifLoanApplication, jifNewMaterial, jifAddBookExisting, jifDevolution, jifAllMaterials,jifDebtsPay;
     public static JDesktopPane jDesktopPane;
     public static JMenuItem jmiNewMaterial, jmiAddBookExisting, jmiNewStudent,
             jmiDeleteStudent, jmiUpdateStudent, jmiShowStudents, jmiVerify,
-            jmiDevolution, jmiAllMaterials;
+            jmiDevolution, jmiAllMaterials,jmiDebtsPay;
     public static int flag;
 
     public MainWindows() {
@@ -59,6 +57,7 @@ public class MainWindows extends JFrame implements ActionListener {
         jmiNewMaterial = new JMenuItem("New Material");
         jmiAddBookExisting = new JMenuItem("Add Book Existing");
         jmiAllMaterials = new JMenuItem("All Materials");
+        jmiDebtsPay= new JMenuItem("Debts Pay");
 
         this.jmStudent.setMnemonic('S');
         this.jmMaterial.setMnemonic('M');
@@ -72,6 +71,7 @@ public class MainWindows extends JFrame implements ActionListener {
         jmiAddBookExisting.setMnemonic('A');
         jmiDevolution.setMnemonic('D');
         jmiAllMaterials.setMnemonic('M');
+        jmiDebtsPay.setMnemonic('P');
 
         jmiNewStudent.addActionListener(this);
         jmiDeleteStudent.addActionListener(this);
@@ -82,7 +82,8 @@ public class MainWindows extends JFrame implements ActionListener {
         jmiAddBookExisting.addActionListener(this);
         jmiDevolution.addActionListener(this);
         jmiAllMaterials.addActionListener(this);
-
+        jmiDebtsPay.addActionListener(this);
+        
         this.jMenuBar.setSize(800, 30);
 
         this.jmStudent.add(jmiNewStudent);
@@ -91,6 +92,7 @@ public class MainWindows extends JFrame implements ActionListener {
         this.jmStudent.add(jmiShowStudents);
         this.jmLoans.add(jmiVerify);
         this.jmLoans.add(jmiDevolution);
+        this.jmLoans.add(jmiDebtsPay);
         this.jmMaterial.add(jmiNewMaterial);
         this.jmMaterial.add(jmiAddBookExisting);
         this.jmMaterial.add(jmiAllMaterials);
@@ -152,6 +154,11 @@ public class MainWindows extends JFrame implements ActionListener {
             this.jifAllMaterials = new JIFAllMaterials();
             jDesktopPane.add(this.jifAllMaterials);
             this.jifAllMaterials.setVisible(true);
+        }else{
+            jmiDebtsPay.setEnabled(false);
+            this.jifDebtsPay=new JIFDebtPay();
+            jDesktopPane.add(this.jifDebtsPay);
+            this.jifDebtsPay.setVisible(true);
         }
     } // actionPerformed
 

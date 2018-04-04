@@ -27,8 +27,8 @@ import javax.swing.event.InternalFrameListener;
 
 public class JIFNewMaterial extends JInternalFrame implements ActionListener, InternalFrameListener {
 
+    //atributos
     private MaterialBusiness materialBusiness;
-
     private JComboBox jcbOption, jcbTheme, jcbBrand, jcbType;
     private JLabel jlName, jlAuthor, jlYear, jlTheme, jlLanguage, jlCountry, jlFormat, jlBrand, jlDescription, jlType;
     private JTextField jtfName, jtfAuthor, jtfYear, jtfLanguage, jtfCountry, jtfDescription;
@@ -48,6 +48,7 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     } // constructor
 
+    //inicia los elementos graficos
     private void init() {
         initComponets();
         this.jcbOption.addItem("Book");
@@ -148,7 +149,8 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
         this.bgFormat.add(this.jrbDigital);
         this.bgFormat.add(this.jrbPhysical);
     } // initComponets
-
+    
+    //inicializa los componentes por si se selecciona libros
     private void initBook() {
         this.setSize(360, 450);
         refresh();
@@ -195,7 +197,7 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
         this.add(this.jrbPhysical);
         this.add(this.jbOkBook);
     } // initBook
-
+    
     private void initAudiovisual() {
         this.setSize(360, 240);
         refresh();
@@ -218,7 +220,7 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
         this.add(this.jtfDescription);
         this.add(this.jbOkAudiovisual);
     } // initAudiovisual: laptop, proyector, Mouse
-
+    
     private void initDisk() {
         this.setSize(360, 280);
         refresh();
@@ -378,6 +380,8 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
                 int year = Integer.parseInt(this.jtfYear.getText());
                 if (name.equals("") || author.equals("") || language.equals("") || country.equals("")) {
                     JOptionPane.showMessageDialog(this, "All spaces are required", "Error", 0);
+                }else if(year>2018){
+                    JOptionPane.showMessageDialog(this, "The date can not be greater than the current year ", "Error", 0);
                 } else {
                     Book book = new Book(name, author, year, this.jcbTheme.getSelectedItem().toString(),
                             language, country, "", 1, -1, this.jcbOption.getSelectedItem().toString());

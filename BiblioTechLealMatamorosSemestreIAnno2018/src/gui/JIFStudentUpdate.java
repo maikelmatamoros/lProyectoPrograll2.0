@@ -23,7 +23,7 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 public class JIFStudentUpdate extends JInternalFrame implements ActionListener, InternalFrameListener {
-
+    //atributos
     private JComboBox jComboCareer, jComboID;
     private JTextField jtfName, jtfLast, jtfYear;
     private JLabel jlblName, jlblLast, jlblYear, jlblCareer, jlblID;
@@ -49,9 +49,9 @@ public class JIFStudentUpdate extends JInternalFrame implements ActionListener, 
 
     public void init() {
         this.jComboCareer = new JComboBox();
-        this.jComboCareer.addItem("Agronomía");
-        this.jComboCareer.addItem("Educación");
-        this.jComboCareer.addItem("Informática");
+        this.jComboCareer.addItem("Agronomy");
+        this.jComboCareer.addItem("Education");
+        this.jComboCareer.addItem("Computing");
         this.jComboCareer.setEnabled(false);
         this.jComboCareer.setForeground(Color.BLACK);
 
@@ -158,9 +158,9 @@ public class JIFStudentUpdate extends JInternalFrame implements ActionListener, 
             this.jtfName.setText(this.list.get(this.jComboID.getSelectedIndex()).getName());
             this.jtfLast.setText(this.list.get(this.jComboID.getSelectedIndex()).getLastName());
             this.jtfYear.setText(String.valueOf(this.list.get(this.jComboID.getSelectedIndex()).getYear()));
-            if (this.list.get(this.jComboID.getSelectedIndex()).getCarrera().equals("Agronomía")) {
+            if (this.list.get(this.jComboID.getSelectedIndex()).getCarrera().equals("Agronomy")) {
                 this.jComboCareer.setSelectedIndex(0);
-            } else if (this.list.get(this.jComboID.getSelectedIndex()).getCarrera().equals("Educación")) {
+            } else if (this.list.get(this.jComboID.getSelectedIndex()).getCarrera().equals("Education")) {
                 this.jComboCareer.setSelectedIndex(1);
             } else {
                 this.jComboCareer.setSelectedIndex(2);
