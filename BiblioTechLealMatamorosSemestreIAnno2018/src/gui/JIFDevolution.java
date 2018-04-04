@@ -4,6 +4,7 @@ import business.LoanBusiness;
 import business.MaterialBusiness;
 import business.StudentBusiness;
 import com.toedter.calendar.JDateChooser;
+import domain.CustomPanel;
 import domain.Loan;
 import domain.Student;
 import java.awt.Color;
@@ -52,6 +53,7 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
     public JIFDevolution() {
         super("Devolution", false, true, false, false);
         this.setLocation(20, 40);
+        this.setContentPane(new CustomPanel(1, 0, 0, 710, 410));
         this.setLayout(null);
         try {
             this.studentBusiness = new StudentBusiness();
@@ -76,24 +78,38 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
         this.jtfPenaltyFee = new JTextField();
         this.jbCheck = new JButton("Check");
         this.jlblCurrentDate = new JLabel("Current Date:");
+        
+        this.jlStudentID.setBackground(Color.BLACK);
+        this.jlblPenaltyFee.setBackground(Color.BLACK);
+        this.jlblCurrentDate.setBackground(Color.BLACK);
 
         this.jbCheck.addActionListener(this);
         this.jbtnDevolution = new JButton("Devolution");
 
-        this.jlStudentID.setBounds(30, 20, 120, 15);
+        this.jlStudentID.setBounds(40, 20, 120, 15);
         this.jlblPenaltyFee.setBounds(450, 300, 100, 30);
         this.jtfPenaltyFee.setBounds(550, 300, 100, 30);
-        this.jtfStudentID.setBounds(30, 40, 170, 25);
-        this.jbCheck.setBounds(30, 70, 90, 30);
+        this.jtfStudentID.setBounds(40, 40, 170, 25);
+        this.jbCheck.setBounds(80, 70, 80, 30);
         this.jdcCurrentDate.setBounds(120, 300, 150, 30);
         this.jlblCurrentDate.setBounds(10, 300, 150, 30);
-        this.jbtnDevolution.setBounds(290, 300, 150, 30);
+        this.jbtnDevolution.setBounds(290, 300, 145, 30);
 
         this.jbtnDevolution.setVisible(false);
         this.jbtnDevolution.addActionListener(this);
         this.jlblPenaltyFee.setVisible(false);
         this.jtfPenaltyFee.setVisible(false);
         this.jtfPenaltyFee.setEnabled(false);
+        
+        this.jbCheck.setFont(new java.awt.Font("DejaVu Sans Condensed", 3, 15));
+        this.jbCheck.setForeground(new java.awt.Color(19, 135, 196));
+        this.jbCheck.setBorderPainted(false);
+        this.jbCheck.setFocusable(false);
+        
+        this.jbtnDevolution.setFont(new java.awt.Font("DejaVu Sans Condensed", 3, 15));
+        this.jbtnDevolution.setForeground(new java.awt.Color(19, 135, 196));
+        this.jbtnDevolution.setBorderPainted(false);
+        this.jbtnDevolution.setFocusable(false);
 
         this.add(this.jlStudentID);
         this.add(this.jlblPenaltyFee);
@@ -107,7 +123,7 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
 
     private void initTable() {
         try {
-            this.setSize(700, 500);
+            this.setSize(700, 400);
             this.list = loanBusiness.getPersonLoans(this.ID);
             Object[][] objects = new Object[0][0];
             String[] columNames = {"Code", "Type", "Loan date", "Return date"};
@@ -124,6 +140,8 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
             this.scrollPane = new JScrollPane(this.jtbTable);
             this.scrollPane.setBounds(5, 5, 680, 285);
             this.jtbTable.setSelectionBackground(Color.GREEN);
+            this.jtbTable.setBackground(new Color(156, 156, 255));
+            this.scrollPane.getViewport().setBackground(new Color(203, 203, 255));
             this.add(this.scrollPane);
             this.jtbTable.addMouseListener(this);
         } catch (IOException ex) {
@@ -138,17 +156,6 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
         this.remove(this.jtfStudentID);
         this.remove(this.jbCheck);
         this.repaint();
-
-        //ARREGLAR
-//        try {
-//            this.materialBusiness = new MaterialBusiness();
-//            this.list = (ArrayList<Material>) this.materialBusiness.getAllMaterials();
-//        } catch (IOException ex) {
-//            Logger.getLogger(JIFStudentDelete.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(JIFDevolution.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        initTable(this.list);
     } // refresh
 
     @Override

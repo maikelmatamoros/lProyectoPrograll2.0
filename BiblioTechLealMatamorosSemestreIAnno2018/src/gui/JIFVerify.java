@@ -1,14 +1,17 @@
 package gui;
 
 import business.StudentBusiness;
+import domain.CustomPanel;
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,17 +19,17 @@ import javax.swing.JTextField;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
-
 public class JIFVerify extends JInternalFrame implements ActionListener, InternalFrameListener {
 
     private StudentBusiness studentBusiness;
     private JLabel jlblID;
-    public static JButton jbtnVerify;
+    private JButton jbtnVerify;
     private JTextField jTextField;
     public static String ID;
 
     public JIFVerify() {
         super("Loan Material", false, true, false, false);
+        this.setContentPane(new CustomPanel(1, 0, 0, 240, 170));
         this.setLayout(null);
         try {
             this.studentBusiness = new StudentBusiness();
@@ -41,20 +44,27 @@ public class JIFVerify extends JInternalFrame implements ActionListener, Interna
     }//constructor
 
     public void init() {
-        this.setSize(300, 200);
-        jbtnVerify = new JButton("Login");
-        this.jTextField = new JTextField();
+        this.setSize(230, 160);
         this.jlblID = new JLabel("ID");
+        this.jTextField = new JTextField();
+        this.jbtnVerify = new JButton();
 
-        jbtnVerify.setBounds(90, 90, 90, 30);
-        this.jTextField.setBounds(150, 20, 90, 30);
-        this.jlblID.setBounds(80, 20, 50, 30);
+        this.jlblID.setBackground(Color.BLACK);
+        this.jlblID.setBounds(35, 20, 50, 30);
+        this.jTextField.setBounds(70, 20, 100, 25);
+        this.jbtnVerify.setBounds(65, 70, 90, 30);
+
+        ImageIcon image = new ImageIcon("src/assets/jbOk.png");
+        Icon icon = new ImageIcon(image.getImage().getScaledInstance(this.jbtnVerify.getWidth(), this.jbtnVerify.getHeight(), Image.SCALE_DEFAULT));
+        this.jbtnVerify.setIcon(icon);
+        this.jbtnVerify.setContentAreaFilled(false);
+        this.jbtnVerify.setBorderPainted(false);
+
         this.jbtnVerify.addActionListener(this);
 
         add(this.jbtnVerify);
         this.add(this.jlblID);
         this.add(this.jTextField);
-
     } // inicializa el boton
 
     @Override
@@ -63,17 +73,17 @@ public class JIFVerify extends JInternalFrame implements ActionListener, Interna
             Boolean idExist = this.studentBusiness.validLogin(this.jTextField.getText());
 
             if (idExist) {
-                int amount = studentBusiness.getStudent(studentBusiness.getPosition(this.jTextField.getText())).getPenalty();
+                int amount = this.studentBusiness.getStudent(this.studentBusiness.getPosition(this.jTextField.getText())).getPenalty();
                 if (amount == 0) {
-                    JOptionPane.showMessageDialog(rootPane, "Succes");
+                    JOptionPane.showMessageDialog(this.rootPane, "Succes");
                     this.dispose();
                     JIFLoan jIFLoan = new JIFLoan(this.jTextField.getText());
-                    
+
                     MainWindows.jDesktopPane.add(jIFLoan);
                     jIFLoan.setVisible(true);
-                    MainWindows.flag=2;
-                }else{
-                        JOptionPane.showMessageDialog(rootPane, "You can not access a loan because you are delinquent at this time, pay and try again");
+                    MainWindows.flag = 2;
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "You can not access a loan because you are delinquent at this time, pay and try again");
                 }
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Your ID no registered");
@@ -83,46 +93,36 @@ public class JIFVerify extends JInternalFrame implements ActionListener, Interna
             Logger.getLogger(JIFVerify.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
-
+    } // actionPerformed
 
     //evento de internalFrame, se usa para volver a hacer usable el JMitem que abre la ventana
-
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void internalFrameClosing(InternalFrameEvent e) {
-       
-//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void internalFrameClosed(InternalFrameEvent e) {
-       MainWindows.flag=1;
-//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MainWindows.flag = 1;
     }
 
     @Override
     public void internalFrameIconified(InternalFrameEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void internalFrameDeiconified(InternalFrameEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void internalFrameActivated(InternalFrameEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) {
-
     }
 
 } // fin de la clase
