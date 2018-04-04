@@ -1,15 +1,17 @@
 package domain;
 
 public class Student {
+    //Atributos
     private String id,name,lastName,carrera;
-    private int year;
-    
+    private int year,penaltyFee;
+    //constructores
     public Student(){
         this.id="";
         this.name="";
         this.lastName="";
         this.carrera="";
         this.year=0;
+        this.penaltyFee=0;
     }
 
     public Student(String id, String name, String lastName, String carrera, int year) {
@@ -18,8 +20,9 @@ public class Student {
         this.lastName = lastName;
         this.carrera = carrera;
         this.year = year;
+        this.penaltyFee=0;
     }
-
+    //metodos accesores
     public String getId() {
         return id;
     }
@@ -59,9 +62,18 @@ public class Student {
     public void setYear(int year) {
         this.year = year;
     }
+    public void setPenalty(int amount){
+        this.penaltyFee+=amount;
+    }
+    public void clearPenalty(){
+        this.penaltyFee=0;
+    }
+    public int getPenalty(){
+        return this.penaltyFee;
+    }
     
     public int sizeInBytes(){
-        return this.name.length()*2+this.lastName.length()*2+this.id.length()*2+this.carrera.length()*2+4;
+        return this.name.length()*2+this.lastName.length()*2+this.id.length()*2+this.carrera.length()*2+8;
     }
     
 } // fin de la clase

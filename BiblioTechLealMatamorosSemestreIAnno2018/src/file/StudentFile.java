@@ -46,6 +46,7 @@ public class StudentFile {
                 this.randomAccessFile.writeUTF(student.getLastName());
                 this.randomAccessFile.writeUTF(student.getCarrera());
                 this.randomAccessFile.writeInt(student.getYear());
+                this.randomAccessFile.writeInt(student.getPenalty());
                 this.randomAccessFile.writeUTF(student.getId());
                 return true;
             } // if (vehicle.sizeInBytes() > this.regSize)
@@ -68,6 +69,7 @@ public class StudentFile {
             tempStudent.setLastName(this.randomAccessFile.readUTF());
             tempStudent.setCarrera(this.randomAccessFile.readUTF());
             tempStudent.setYear(this.randomAccessFile.readInt());
+            tempStudent.setPenalty(this.randomAccessFile.readInt());
             tempStudent.setId(this.randomAccessFile.readUTF());
 
             return tempStudent;
@@ -149,7 +151,8 @@ public class StudentFile {
         } // for
         return vehiclesArray;
     } // getAllVehicles: retorna todos los vehiculos registrados
-        public boolean validLogin(String ID) throws IOException {
+
+    public boolean validLogin(String ID) throws IOException {
         for (int i = 0; i < this.regsQuantity; i++) {
             Student studentTemp = this.getStudent(i);
             if (studentTemp.getId().equalsIgnoreCase(ID)) {
@@ -158,5 +161,16 @@ public class StudentFile {
         } // for
         return false;
     } // getAllVehicles: retorna todos los vehiculos registrados
+
+    public int getPosition(String id) throws IOException {
+        Student studentTemp;
+        for (int i = 0; i < this.regsQuantity; i++) {
+            studentTemp = getStudent(i);
+            if (studentTemp.getId().equalsIgnoreCase(id) ) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
 } // fin de la clase

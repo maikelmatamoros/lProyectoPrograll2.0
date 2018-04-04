@@ -29,12 +29,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableModel;
 
-public class JIFLoan extends JInternalFrame implements ActionListener, MouseListener, KeyListener {
-
+public class JIFLoan extends JInternalFrame implements ActionListener, MouseListener, KeyListener,InternalFrameListener {
+    //atributos
     private JComboBox jComboSelection, jComboBox;
-    private JButton jbtnLoan;
+    private JButton jbtnOk;
     private JDateChooser jdcLoanDate,jdcReturnDate;
     private JTable jtbTable;
     private DefaultTableModel dtmModelTable;
@@ -46,7 +48,8 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
     private JTextField jtfText, jtfCode, jtfCode1;
     private JLabel jlblText, jlblCode,jlblLoanDate,jlblReturnLoan;
     private String studenID;
-
+    private MaterialBusiness materialBusiness;
+    
     public JIFLoan(String id) {
         super("Loan", false, true, false, false);
         this.setSize(700, 500);
@@ -55,10 +58,13 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.setLocation(30, 30);
         this.subList = new ArrayList<>();
         this.studenID = id;
+        this.materialBusiness=new MaterialBusiness();
         init();
     } // constructor
 
+    //init: inicializa los componentes que se ven al abrir la ventana
     public void init() {
+        this.addInternalFrameListener(this);
         this.jComboSelection = new JComboBox(new String[]{"Book", "Material"});
         this.jdcLoanDate = new JDateChooser();
         this.jdcReturnDate = new JDateChooser();
@@ -68,22 +74,22 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.jComboBox = new JComboBox();
         this.jlblCode = new JLabel("Insert Code");
         this.jlblText = new JLabel("Insert Name");
-        this.jbtnLoan = new JButton("OK");
+        this.jbtnOk = new JButton("OK");
         this.jlblLoanDate=new JLabel("Loan Date");
         this.jlblReturnLoan=new JLabel("Return Date");
 
         this.jComboSelection.setBounds(30, 30, 100, 30);
-        this.jdcLoanDate.setBounds(555, 130, 100, 30);
-        this.jdcReturnDate.setBounds(445, 130, 100, 30);
-        this.jtfText.setBounds(555, 60, 100, 30);
-        this.jtfCode.setBounds(445, 60, 100, 30);
-        this.jtfCode1.setBounds(445, 60, 100, 30);
-        this.jlblCode.setBounds(450, 20, 100, 30);
-        this.jlblText.setBounds(555, 20, 100, 30);
-        this.jlblLoanDate.setBounds(450, 90, 100, 30);
-        this.jlblReturnLoan.setBounds(555, 90, 100, 30);
+        this.jdcLoanDate.setBounds(445, 190, 100, 25);
+        this.jdcReturnDate.setBounds(555, 190, 100, 25);
+        this.jtfText.setBounds(555, 120, 100, 25);
+        this.jtfCode.setBounds(445, 120, 100, 25);
+        this.jtfCode1.setBounds(445, 120, 100, 25);
+        this.jlblCode.setBounds(445, 80, 100, 25);
+        this.jlblText.setBounds(555, 80, 100, 25);
+        this.jlblLoanDate.setBounds(450, 160, 100, 25);
+        this.jlblReturnLoan.setBounds(555, 160, 100, 25);
         
-        this.jbtnLoan.setBounds(460, 200, 100, 40);
+        this.jbtnOk.setBounds(510, 240, 70, 40);
 
         this.jtfText.setVisible(true);
         this.jtfCode.setVisible(true);
@@ -92,7 +98,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.jtfCode1.setVisible(false);
 
         this.jComboSelection.addActionListener(this);
-        this.jbtnLoan.addActionListener(this);
+        this.jbtnOk.addActionListener(this);
         this.jtfText.addKeyListener(this);
         this.jtfCode.addKeyListener(this);
         this.jtfCode1.addKeyListener(this);
@@ -122,7 +128,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.add(this.jlblCode);
         this.add(this.jlblText);
         this.add(this.jtfCode1);
-        this.add(this.jbtnLoan);
+        this.add(this.jbtnOk);
         this.add(this.jlblLoanDate);
         this.add(this.jlblReturnLoan);
     } // init
@@ -133,21 +139,22 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.jtfCode.setText("");
         this.jtfText.setText("");
         this.jtfCode1.setText("");
-    } // clearTextFields
+    } // clearTextFields y variables name y code
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         if (e.getSource() == this.jComboSelection) {
 
             if (this.jComboBox.isShowing()) {
                 this.remove(this.jComboBox);
             }
             clearTextFields();
-            MaterialBusiness materialBusiness = new MaterialBusiness();
+            
             if (this.jComboSelection.getSelectedIndex() == 0) {
 
                 try {
-                    this.list1 = materialBusiness.getBooksAndAudiovisual().get(0);
+                    this.list1 = this.materialBusiness.getBooksAndAudiovisual().get(0);
                 } catch (IOException ex) {
                     Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
@@ -168,7 +175,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
             } else {
                 clearTextFields();
                 try {
-                    this.list2 = materialBusiness.getBooksAndAudiovisual().get(1);
+                    this.list2 = this.materialBusiness.getBooksAndAudiovisual().get(1);
                 } catch (IOException | ClassNotFoundException ex) {
                     Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -198,30 +205,30 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
 
             }
 
-        } else if (e.getSource() == this.jbtnLoan) {
-            
-            LoanBusiness loanBusiness = new LoanBusiness();
-            
+        } else if (e.getSource() == this.jbtnOk) {
+            //agarra las fechas de los JDateChooser y las guarda en variables y luego guarda los pedidos
+            LoanBusiness loanBusiness = new LoanBusiness();    
             String dayLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.DAY_OF_MONTH));
             String monthLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.MONTH) + 1);
             String yearLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.YEAR));
-            String dayReturn = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.DAY_OF_MONTH));
-            String monthReturn = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.MONTH) + 1);
-            String yearReturn = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.YEAR));
+            String dayReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.DAY_OF_MONTH));
+            String monthReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.MONTH) + 1);
+            String yearReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.YEAR));
             String loanDate=yearLoan+"-"+monthLoan+"-"+dayLoan;
             String returnDate =yearReturn+"-"+monthReturn+"-"+dayReturn;
             try {
                 if (loanBusiness.addLoan(new Loan(this.subList.get(this.rowObjetIndex).getCode(), loanDate, returnDate, this.studenID,this.jComboSelection.getSelectedItem().toString()))) {
                     JOptionPane.showMessageDialog(rootPane, "Success");
+                    //recarga las tablas por si algún pedido dejá sin un producto a la biblioteca
                     if (this.jComboSelection.getSelectedIndex() == 0) {
-                        MaterialBusiness materialBusiness = new MaterialBusiness();
-                        materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 0,0);
-                        list1=materialBusiness.getBooksAndAudiovisual().get(0);
+                    
+                        this.materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 0,0);
+                        list1=this.materialBusiness.getBooksAndAudiovisual().get(0);
                         initTableBook(list1, format);
                     } else {
-                        MaterialBusiness materialBusiness = new MaterialBusiness();
-                        materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 1,0);
-                        list2=materialBusiness.getBooksAndAudiovisual().get(1);
+                    
+                        this.materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 1,0);
+                        list2=this.materialBusiness.getBooksAndAudiovisual().get(1);
                         initTableMaterial(list2, format);
                     }
                 }
@@ -431,6 +438,41 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    @Override
+    public void internalFrameOpened(InternalFrameEvent e) {
+        
+    }
+
+    @Override
+    public void internalFrameClosing(InternalFrameEvent e) {
+        
+    }
+
+    @Override
+    public void internalFrameClosed(InternalFrameEvent e) {
+       MainWindows.flag=1;
+    }
+
+    @Override
+    public void internalFrameIconified(InternalFrameEvent e) {
+        
+    }
+
+    @Override
+    public void internalFrameDeiconified(InternalFrameEvent e) {
+        
+    }
+
+    @Override
+    public void internalFrameActivated(InternalFrameEvent e) {
+        
+    }
+
+    @Override
+    public void internalFrameDeactivated(InternalFrameEvent e) {
+        
     }
 
 } // fin de la clase

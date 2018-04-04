@@ -47,5 +47,10 @@ public class StudentBusiness {
         return this.studentFile.validLogin(ID);
 
     }
-    
+    public int getPosition(String id) throws IOException {
+        return this.studentFile.getPosition(id);
+    }
+        public Student getStudent(int position) throws IOException {
+            return this.studentFile.getStudent(position);
+        }
 } // fin de la clase
