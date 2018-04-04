@@ -3,7 +3,9 @@ package gui;
 import business.MaterialBusiness;
 import domain.Audiovisual;
 import domain.Book;
+import domain.CustomPanel;
 import domain.Material;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ public class JIFAllMaterials extends javax.swing.JInternalFrame implements Inter
 
     public JIFAllMaterials() {
         this.setLocation(20, 40);
+        this.setContentPane(new CustomPanel(1,0,0,650,450));
         this.addInternalFrameListener(this);
         initComponents();
         initTable();
@@ -90,8 +93,10 @@ public class JIFAllMaterials extends javax.swing.JInternalFrame implements Inter
                 }
             }
             
-            this.jTable1.setModel(dtmModelTable);
+            this.jTable1.setModel(this.dtmModelTable);
             this.jTable1.setEnabled(false);
+            this.jTable1.setBackground(new Color(156, 156, 255));
+            this.jScrollPane1.getViewport().setBackground(new Color(203, 203, 255));
         } // initTable
         catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(JIFAllMaterials.class.getName()).log(Level.SEVERE, null, ex);

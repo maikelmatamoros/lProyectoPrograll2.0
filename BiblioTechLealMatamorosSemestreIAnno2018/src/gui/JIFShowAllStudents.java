@@ -1,7 +1,9 @@
 package gui;
 
 import business.StudentBusiness;
+import domain.CustomPanel;
 import domain.Student;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -25,12 +27,12 @@ public class JIFShowAllStudents extends JInternalFrame implements InternalFrameL
     //Constructor
     public JIFShowAllStudents() {
         super("Show Students", false, true, false, false);
+        this.setContentPane(new CustomPanel(1, 0, 0, 610, 360));
         this.addInternalFrameListener(this);
         this.setLayout(null);
         this.refresh();
         this.setLocation(20, 40);
         this.setSize(600, 350);
-        this.addInternalFrameListener(this);
     } // constructor
 
     //inicializa la tabla
@@ -46,6 +48,8 @@ public class JIFShowAllStudents extends JInternalFrame implements InternalFrameL
         this.jtbTable.setEnabled(false);
         this.scrollPane = new JScrollPane(this.jtbTable);
         this.scrollPane.setBounds(5, 5, 580, 310);
+        this.jtbTable.setBackground(new Color(156, 156, 255));
+        this.scrollPane.getViewport().setBackground(new Color(203, 203, 255));
         this.add(scrollPane);
     } // inicializa el modelo de la tabla cargando los valores del archivo
 

@@ -42,6 +42,8 @@ public class JIFAddBookExisting extends javax.swing.JInternalFrame implements In
         setClosable(true);
         setTitle("Add Book Existing");
 
+        jScrollPane1.setForeground(new java.awt.Color(1, 1, 1));
+
         jtBooks.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -55,17 +57,26 @@ public class JIFAddBookExisting extends javax.swing.JInternalFrame implements In
         ));
         jScrollPane1.setViewportView(jtBooks);
 
+        jbAdd.setFont(new java.awt.Font("DejaVu Sans Condensed", 3, 18)); // NOI18N
+        jbAdd.setForeground(new java.awt.Color(19, 135, 196));
+
         jbAdd.setText("Add");
+        jbAdd.setToolTipText("");
+        jbAdd.setBorderPainted(false);
+        jbAdd.setFocusable(false);
         jbAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbAddActionPerformed(evt);
             }
         });
 
+        jlCode.setForeground(new java.awt.Color(1, 1, 1));
         jlCode.setText("Code");
 
+        jcbCodes.setForeground(new java.awt.Color(1, 1, 1));
         jcbCodes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jlQuantity.setForeground(new java.awt.Color(1, 1, 1));
         jlQuantity.setText("Quantity");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -75,28 +86,32 @@ public class JIFAddBookExisting extends javax.swing.JInternalFrame implements In
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlCode)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jlQuantity)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jbAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jtfQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(54, Short.MAX_VALUE))
+                                    .addComponent(jlCode)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jlQuantity)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jtfQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(88, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jcbCodes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(37, 37, 37))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jcbCodes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(37, 37, 37))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(67, 67, 67))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
                         .addComponent(jlCode)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jcbCodes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -107,12 +122,10 @@ public class JIFAddBookExisting extends javax.swing.JInternalFrame implements In
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(33, 33, 33)
                                 .addComponent(jtfQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jbAdd))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jbAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(46, 46, 46))
         );
 
         pack();
@@ -148,7 +161,7 @@ public class JIFAddBookExisting extends javax.swing.JInternalFrame implements In
         return newArrayList;
     } // removeDigitals
 
-    private void init() {
+    private void init() {        
         try {
             ArrayList<Material> list = removeDigitals(this.materialBusiness.getBooksAndAudiovisual().get(0));
 
@@ -178,11 +191,11 @@ public class JIFAddBookExisting extends javax.swing.JInternalFrame implements In
             } // for
             this.jtBooks.setModel(dtmModelTable);
             this.jtBooks.setBackground(new Color(156, 156, 255));
-            jScrollPane1.getViewport().setBackground(new Color(203, 203, 255));
+            this.jScrollPane1.getViewport().setBackground(new Color(203, 203, 255));
             this.jtBooks.setEnabled(false);
-            jtBooks.getColumnModel().getColumn(0).setPreferredWidth(10);
-            jtBooks.getColumnModel().getColumn(2).setPreferredWidth(10);
-            jtBooks.getColumnModel().getColumn(3).setPreferredWidth(40);
+            this.jtBooks.getColumnModel().getColumn(0).setPreferredWidth(10);
+            this.jtBooks.getColumnModel().getColumn(2).setPreferredWidth(10);
+            this.jtBooks.getColumnModel().getColumn(3).setPreferredWidth(40);
         } // initTable
         catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(JIFAddBookExisting.class.getName()).log(Level.SEVERE, null, ex);

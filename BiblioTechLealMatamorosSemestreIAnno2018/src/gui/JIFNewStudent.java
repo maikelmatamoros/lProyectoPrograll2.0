@@ -1,12 +1,17 @@
 package gui;
 
 import business.StudentBusiness;
+import domain.CustomPanel;
 import domain.Student;
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
@@ -16,7 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
-public class JIFNewStudent extends JInternalFrame implements ActionListener, InternalFrameListener{
+public class JIFNewStudent extends JInternalFrame implements ActionListener, InternalFrameListener {
 
     private JComboBox jComboBox;
     private JTextField jtfName, jtfLast, jtfYear;
@@ -29,6 +34,7 @@ public class JIFNewStudent extends JInternalFrame implements ActionListener, Int
         this.addInternalFrameListener(this);
         this.setSize(465, 280);
         this.setLocation(20, 40);
+        this.setContentPane(new CustomPanel(1, 0, -100, 465, 350));
         this.setLayout(null);
         try {
             this.studentBusiness = new StudentBusiness();
@@ -51,7 +57,13 @@ public class JIFNewStudent extends JInternalFrame implements ActionListener, Int
         this.jtfYear = new JTextField();
         this.jlblYear = new JLabel("Year");
         this.jlblCareer = new JLabel("Career");
-        this.jbtnSave = new JButton("Save");
+        this.jbtnSave = new JButton();
+
+        this.jlblName.setForeground(Color.BLACK);
+        this.jlblLast.setForeground(Color.BLACK);
+        this.jlblYear.setForeground(Color.BLACK);
+        this.jlblCareer.setForeground(Color.BLACK);
+        this.jComboBox.setForeground(Color.BLACK);
 
         this.jComboBox.setBounds(300, 80, 110, 30);
         this.jtfName.setBounds(120, 40, 110, 30);
@@ -61,7 +73,13 @@ public class JIFNewStudent extends JInternalFrame implements ActionListener, Int
         this.jtfYear.setBounds(120, 120, 110, 30);
         this.jlblYear.setBounds(40, 120, 100, 30);
         this.jlblCareer.setBounds(240, 80, 100, 30);
-        this.jbtnSave.setBounds(120, 170, 100, 30);
+        this.jbtnSave.setBounds(320, 180, 90, 30);
+
+        ImageIcon image = new ImageIcon("src/assets/buttonSave.png");
+        Icon icon = new ImageIcon(image.getImage().getScaledInstance(this.jbtnSave.getWidth(), this.jbtnSave.getHeight(), Image.SCALE_DEFAULT));
+        this.jbtnSave.setIcon(icon);
+        this.jbtnSave.setContentAreaFilled(false);
+        this.jbtnSave.setBorderPainted(false);
 
         this.jbtnSave.setFocusable(false);
         this.jbtnSave.addActionListener(this);
@@ -135,7 +153,8 @@ public class JIFNewStudent extends JInternalFrame implements ActionListener, Int
     } // validation
 
     @Override
-    public void internalFrameOpened(InternalFrameEvent e) {}
+    public void internalFrameOpened(InternalFrameEvent e) {
+    }
 
     @Override
     public void internalFrameClosing(InternalFrameEvent e) {
@@ -143,18 +162,23 @@ public class JIFNewStudent extends JInternalFrame implements ActionListener, Int
     }
 
     @Override
-    public void internalFrameClosed(InternalFrameEvent e) {}
+    public void internalFrameClosed(InternalFrameEvent e) {
+    }
 
     @Override
-    public void internalFrameIconified(InternalFrameEvent e) {}
+    public void internalFrameIconified(InternalFrameEvent e) {
+    }
 
     @Override
-    public void internalFrameDeiconified(InternalFrameEvent e) {}
+    public void internalFrameDeiconified(InternalFrameEvent e) {
+    }
 
     @Override
-    public void internalFrameActivated(InternalFrameEvent e) {}
+    public void internalFrameActivated(InternalFrameEvent e) {
+    }
 
     @Override
-    public void internalFrameDeactivated(InternalFrameEvent e) {}
+    public void internalFrameDeactivated(InternalFrameEvent e) {
+    }
 
 } // fin de la clase

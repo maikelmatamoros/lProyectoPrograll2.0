@@ -1,8 +1,10 @@
 package gui;
 
 import business.StudentBusiness;
+import domain.CustomPanel;
 import domain.Student;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -11,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -33,6 +37,7 @@ public class JIFStudentDelete extends JInternalFrame implements ActionListener, 
 
     public JIFStudentDelete() {
         super("Delete Student", false, true, false, false);
+        this.setContentPane(new CustomPanel(1, 0, 0, 610, 330));
         this.setLayout(null);
         this.refresh();
         this.init();
@@ -42,27 +47,33 @@ public class JIFStudentDelete extends JInternalFrame implements ActionListener, 
     } // constructor
 
     public void init() {
-        this.jbtnDelete = new JButton("Delete");
-        this.jbtnDelete.setBounds(460, 100, 90, 90);
+        this.jbtnDelete = new JButton();
+        this.jbtnDelete.setBounds(460, 130, 90, 40);
+        ImageIcon image = new ImageIcon("src/assets/buttonDelete.png");
+        Icon icon = new ImageIcon(image.getImage().getScaledInstance(this.jbtnDelete.getWidth(), this.jbtnDelete.getHeight(), Image.SCALE_DEFAULT));
+        this.jbtnDelete.setIcon(icon);
+        this.jbtnDelete.setContentAreaFilled(false);
+        this.jbtnDelete.setBorderPainted(false);
         this.jbtnDelete.addActionListener(this);
         this.add(this.jbtnDelete);
-
     } // inicializa el boton
 
     public void initTable(ArrayList<Student> list) {
         Object[][] studens = new Object[0][0];
         String[] columNames1 = {"Name", "LastName", "Year", "Career", "ID"};
         this.dtmModelTable = new DefaultTableModel(studens, columNames1);
-        
+
         for (int i = 0; i < list.size(); i++) {
             this.dtmModelTable.addRow(new Object[]{list.get(i).getName(),
                 list.get(i).getLastName(), list.get(i).getYear(), list.get(i).getCarrera(), list.get(i).getId()});
         }//for
-        
+
         this.jtbTable = new JTable(this.dtmModelTable);
         this.scrollPane = new JScrollPane(this.jtbTable);
         this.scrollPane.setBounds(5, 5, 420, 285);
-        this.jtbTable.setSelectionBackground(Color.GREEN);
+        this.jtbTable.setSelectionBackground(new Color(255, 102, 102));
+        this.jtbTable.setBackground(new Color(156, 156, 255));
+        this.scrollPane.getViewport().setBackground(new Color(203, 203, 255));
         this.add(this.scrollPane);
         this.jtbTable.addMouseListener(this);
     } // inicializa el modelo de la tabla cargando los valores del archivo

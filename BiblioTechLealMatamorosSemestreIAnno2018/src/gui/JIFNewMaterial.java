@@ -3,12 +3,17 @@ package gui;
 import business.MaterialBusiness;
 import domain.Audiovisual;
 import domain.Book;
+import domain.CustomPanel;
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
@@ -35,9 +40,9 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
         super("New Material", false, true, false, false);
         this.setSize(360, 150);
         this.setLocation(20, 40);
-        this.setLayout(null);
-
         this.materialBusiness = new MaterialBusiness();
+        this.setContentPane(new CustomPanel(1, 0, -160, 360, 580));
+        this.setLayout(null);
         init();
         this.addInternalFrameListener(this);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -71,6 +76,17 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
         this.jlLanguage = new JLabel("Language");
         this.jlDescription = new JLabel("Description");
 
+        this.jlYear.setForeground(Color.BLACK);
+        this.jlType.setForeground(Color.BLACK);
+        this.jlName.setForeground(Color.BLACK);
+        this.jlBrand.setForeground(Color.BLACK);
+        this.jlTheme.setForeground(Color.BLACK);
+        this.jlAuthor.setForeground(Color.BLACK);
+        this.jlFormat.setForeground(Color.BLACK);
+        this.jlCountry.setForeground(Color.BLACK);
+        this.jlLanguage.setForeground(Color.BLACK);
+        this.jlDescription.setForeground(Color.BLACK);
+
         this.jtfName = new JTextField();
         this.jtfYear = new JTextField();
         this.jtfAuthor = new JTextField();
@@ -78,18 +94,29 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
         this.jtfLanguage = new JTextField();
         this.jtfDescription = new JTextField();
 
-        this.jbOkBook = new JButton("OK");
-        this.jbOkAudiovisual = new JButton("OK");
-        this.jbOkDisk = new JButton("OK");
-        this.jbOkOther = new JButton("OK");
+        this.jbOkBook = new JButton();
+        this.jbOkAudiovisual = new JButton();
+        this.jbOkDisk = new JButton();
+        this.jbOkOther = new JButton();
 
         this.jrbDigital = new JRadioButton("Digital");
         this.jrbPhysical = new JRadioButton("Physical");
+
+        this.jrbDigital.setForeground(Color.BLACK);
+        this.jrbPhysical.setForeground(Color.BLACK);
+
+        this.jrbDigital.setContentAreaFilled(false);
+        this.jrbPhysical.setContentAreaFilled(false);
 
         this.jcbType = new JComboBox();
         this.jcbTheme = new JComboBox();
         this.jcbBrand = new JComboBox();
         this.jcbOption = new JComboBox();
+
+        this.jcbType.setForeground(Color.BLACK);
+        this.jcbTheme.setForeground(Color.BLACK);
+        this.jcbBrand.setForeground(Color.BLACK);
+        this.jcbOption.setForeground(Color.BLACK);
 
         this.bgFormat = new ButtonGroup();
 
@@ -123,25 +150,31 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
     } // initComponets
 
     private void initBook() {
-        this.setSize(360, 480);
+        this.setSize(360, 450);
         refresh();
 
-        this.jlName.setBounds(30, 110, 40, 15);
-        this.jlAuthor.setBounds(30, 150, 50, 15);
-        this.jlYear.setBounds(30, 190, 70, 15);
-        this.jlTheme.setBounds(30, 230, 70, 15);
-        this.jlLanguage.setBounds(30, 270, 100, 15);
-        this.jlCountry.setBounds(30, 310, 70, 15);
-        this.jlFormat.setBounds(30, 350, 70, 15);
-        this.jtfName.setBounds(130, 105, 170, 25);
-        this.jtfAuthor.setBounds(130, 145, 170, 25);
-        this.jtfYear.setBounds(130, 185, 170, 25);
-        this.jcbTheme.setBounds(130, 225, 170, 25);
-        this.jtfLanguage.setBounds(130, 265, 170, 25);
-        this.jtfCountry.setBounds(130, 305, 170, 25);
-        this.jrbDigital.setBounds(125, 350, 85, 15);
-        this.jrbPhysical.setBounds(210, 350, 170, 15);
-        this.jbOkBook.setBounds(230, 390, 70, 40);
+        this.jlName.setBounds(30, 80, 40, 15);
+        this.jlAuthor.setBounds(30, 120, 50, 15);
+        this.jlYear.setBounds(30, 160, 70, 15);
+        this.jlTheme.setBounds(30, 200, 70, 15);
+        this.jlLanguage.setBounds(30, 240, 100, 15);
+        this.jlCountry.setBounds(30, 280, 70, 15);
+        this.jlFormat.setBounds(30, 320, 70, 15);
+        this.jtfName.setBounds(130, 75, 170, 25);
+        this.jtfAuthor.setBounds(130, 115, 170, 25);
+        this.jtfYear.setBounds(130, 155, 170, 25);
+        this.jcbTheme.setBounds(130, 195, 170, 25);
+        this.jtfLanguage.setBounds(130, 235, 170, 25);
+        this.jtfCountry.setBounds(130, 275, 170, 25);
+        this.jrbDigital.setBounds(125, 320, 73, 15);
+        this.jrbPhysical.setBounds(210, 320, 85, 15);
+        this.jbOkBook.setBounds(240, 360, 80, 30);
+
+        ImageIcon image = new ImageIcon("src/assets/jbOk.png");
+        Icon icon = new ImageIcon(image.getImage().getScaledInstance(this.jbOkBook.getWidth(), this.jbOkBook.getHeight(), Image.SCALE_DEFAULT));
+        this.jbOkBook.setIcon(icon);
+        this.jbOkBook.setContentAreaFilled(false);
+        this.jbOkBook.setBorderPainted(false);
 
         this.jrbDigital.setSelected(true);
 
@@ -171,7 +204,13 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
         this.jlDescription.setBounds(30, 110, 90, 15);
         this.jcbBrand.setBounds(130, 65, 170, 25);
         this.jtfDescription.setBounds(130, 105, 170, 25);
-        this.jbOkAudiovisual.setBounds(230, 140, 70, 40);
+        this.jbOkAudiovisual.setBounds(230, 160, 80, 30);
+
+        ImageIcon image = new ImageIcon("src/assets/jbOk.png");
+        Icon icon = new ImageIcon(image.getImage().getScaledInstance(this.jbOkAudiovisual.getWidth(), this.jbOkAudiovisual.getHeight(), Image.SCALE_DEFAULT));
+        this.jbOkAudiovisual.setIcon(icon);
+        this.jbOkAudiovisual.setContentAreaFilled(false);
+        this.jbOkAudiovisual.setBorderPainted(false);
 
         this.add(this.jlBrand);
         this.add(this.jlDescription);
@@ -181,7 +220,7 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
     } // initAudiovisual: laptop, proyector, Mouse
 
     private void initDisk() {
-        this.setSize(360, 300);
+        this.setSize(360, 280);
         refresh();
 
         this.jlType.setBounds(30, 70, 50, 15);
@@ -190,7 +229,13 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
         this.jcbType.setBounds(130, 65, 170, 25);
         this.jtfName.setBounds(130, 105, 170, 25);
         this.jtfDescription.setBounds(130, 140, 170, 25);
-        this.jbOkDisk.setBounds(230, 180, 70, 40);
+        this.jbOkDisk.setBounds(230, 190, 80, 30);
+
+        ImageIcon image = new ImageIcon("src/assets/jbOk.png");
+        Icon icon = new ImageIcon(image.getImage().getScaledInstance(this.jbOkDisk.getWidth(), this.jbOkDisk.getHeight(), Image.SCALE_DEFAULT));
+        this.jbOkDisk.setIcon(icon);
+        this.jbOkDisk.setContentAreaFilled(false);
+        this.jbOkDisk.setBorderPainted(false);
 
         this.add(this.jlType);
         this.add(this.jlName);
@@ -209,7 +254,13 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
         this.jlDescription.setBounds(30, 110, 90, 15);
         this.jtfName.setBounds(130, 65, 170, 25);
         this.jtfDescription.setBounds(130, 100, 170, 25);
-        this.jbOkOther.setBounds(230, 140, 70, 40);
+        this.jbOkOther.setBounds(230, 160, 80, 30);
+
+        ImageIcon image = new ImageIcon("src/assets/jbOk.png");
+        Icon icon = new ImageIcon(image.getImage().getScaledInstance(this.jbOkOther.getWidth(), this.jbOkOther.getHeight(), Image.SCALE_DEFAULT));
+        this.jbOkOther.setIcon(icon);
+        this.jbOkOther.setContentAreaFilled(false);
+        this.jbOkOther.setBorderPainted(false);
 
         this.add(this.jlName);
         this.add(this.jlDescription);
@@ -352,7 +403,7 @@ public class JIFNewMaterial extends JInternalFrame implements ActionListener, In
                 this.materialBusiness.addMaterial(new Audiovisual(this.jcbBrand.getSelectedItem().toString(),
                         this.jtfDescription.getText(), -1, this.jcbOption.getSelectedItem().toString(),
                         true), 1);
-    
+
                 JOptionPane.showMessageDialog(this, "Success");
                 cleanTextFields();
             } catch (IOException | ClassNotFoundException ex) {

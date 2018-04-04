@@ -1,13 +1,18 @@
 package gui;
 
 import business.StudentBusiness;
+import domain.CustomPanel;
 import domain.Student;
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
@@ -17,7 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
-public class JIFStudentUpdate extends JInternalFrame implements ActionListener , InternalFrameListener{
+public class JIFStudentUpdate extends JInternalFrame implements ActionListener, InternalFrameListener {
 
     private JComboBox jComboCareer, jComboID;
     private JTextField jtfName, jtfLast, jtfYear;
@@ -31,6 +36,7 @@ public class JIFStudentUpdate extends JInternalFrame implements ActionListener ,
         this.addInternalFrameListener(this);
         this.setSize(450, 300);
         this.setLocation(20, 40);
+        this.setContentPane(new CustomPanel(1, 0, 0, 460, 310));
         this.setLayout(null);
         try {
             this.studentBusiness = new StudentBusiness();
@@ -47,7 +53,8 @@ public class JIFStudentUpdate extends JInternalFrame implements ActionListener ,
         this.jComboCareer.addItem("Educación");
         this.jComboCareer.addItem("Informática");
         this.jComboCareer.setEnabled(false);
-        
+        this.jComboCareer.setForeground(Color.BLACK);
+
         this.jComboID = new JComboBox();
 
         if (list.isEmpty()) {
@@ -66,8 +73,14 @@ public class JIFStudentUpdate extends JInternalFrame implements ActionListener ,
         this.jlblYear = new JLabel("Year");
         this.jlblCareer = new JLabel("Career");
         this.jlblID = new JLabel("ID");
-        this.jbtnUpdate = new JButton("Update");
-        this.jbtnSearch = new JButton("Search");
+        this.jbtnUpdate = new JButton();
+        this.jbtnSearch = new JButton();
+        
+        this.jlblName.setForeground(Color.BLACK);
+        this.jlblLast.setForeground(Color.BLACK);
+        this.jlblYear.setForeground(Color.BLACK);
+        this.jlblCareer.setForeground(Color.BLACK);
+        this.jlblID.setForeground(Color.BLACK);
 
         this.jComboID.setBounds(110, 20, 110, 30);
         this.jlblID.setBounds(30, 20, 110, 30);
@@ -79,8 +92,20 @@ public class JIFStudentUpdate extends JInternalFrame implements ActionListener ,
         this.jlblYear.setBounds(30, 140, 100, 30);
         this.jlblCareer.setBounds(230, 60, 100, 30);
         this.jComboCareer.setBounds(290, 60, 110, 30);
-        this.jbtnUpdate.setBounds(110, 190, 100, 30);
-        this.jbtnSearch.setBounds(230, 20, 110, 30);
+        this.jbtnUpdate.setBounds(250, 190, 110, 40);
+        this.jbtnSearch.setBounds(230, 20, 80, 30);
+
+        ImageIcon image = new ImageIcon("src/assets/buttonUpdate.png");
+        Icon icon = new ImageIcon(image.getImage().getScaledInstance(this.jbtnUpdate.getWidth(), this.jbtnUpdate.getHeight(), Image.SCALE_DEFAULT));
+        this.jbtnUpdate.setIcon(icon);
+        this.jbtnUpdate.setContentAreaFilled(false);
+        this.jbtnUpdate.setBorderPainted(false);
+
+        ImageIcon image1 = new ImageIcon("src/assets/buttonSearch.png");
+        Icon icon1 = new ImageIcon(image1.getImage().getScaledInstance(this.jbtnSearch.getWidth(), this.jbtnSearch.getHeight(), Image.SCALE_DEFAULT));
+        this.jbtnSearch.setIcon(icon1);
+        this.jbtnSearch.setContentAreaFilled(false);
+        this.jbtnSearch.setBorderPainted(false);
 
         this.jbtnSearch.addActionListener(this);
         this.jbtnUpdate.addActionListener(this);
@@ -176,7 +201,8 @@ public class JIFStudentUpdate extends JInternalFrame implements ActionListener ,
     } // refresh
 
     @Override
-    public void internalFrameOpened(InternalFrameEvent e) {}
+    public void internalFrameOpened(InternalFrameEvent e) {
+    }
 
     @Override
     public void internalFrameClosing(InternalFrameEvent e) {
@@ -184,18 +210,23 @@ public class JIFStudentUpdate extends JInternalFrame implements ActionListener ,
     }
 
     @Override
-    public void internalFrameClosed(InternalFrameEvent e) {}
+    public void internalFrameClosed(InternalFrameEvent e) {
+    }
 
     @Override
-    public void internalFrameIconified(InternalFrameEvent e) {}
+    public void internalFrameIconified(InternalFrameEvent e) {
+    }
 
     @Override
-    public void internalFrameDeiconified(InternalFrameEvent e) {}
+    public void internalFrameDeiconified(InternalFrameEvent e) {
+    }
 
     @Override
-    public void internalFrameActivated(InternalFrameEvent e) {}
+    public void internalFrameActivated(InternalFrameEvent e) {
+    }
 
     @Override
-    public void internalFrameDeactivated(InternalFrameEvent e) {}
-    
+    public void internalFrameDeactivated(InternalFrameEvent e) {
+    }
+
 } // fin de la clase
