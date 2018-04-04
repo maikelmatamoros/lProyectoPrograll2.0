@@ -99,7 +99,7 @@ public class JIFDevolution extends JInternalFrame implements InternalFrameListen
         this.jbtnDevolution.addActionListener(this);
         this.jlblPenaltyFee.setVisible(false);
         this.jtfPenaltyFee.setVisible(false);
-        this.jtfPenaltyFee.setEnabled(false);
+        this.jtfPenaltyFee.setEditable(false);
         
         this.jbCheck.setFont(new java.awt.Font("DejaVu Sans Condensed", 3, 15));
         this.jbCheck.setForeground(new java.awt.Color(19, 135, 196));

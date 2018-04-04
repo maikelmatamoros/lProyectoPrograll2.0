@@ -30,7 +30,7 @@ public class JIFNewStudent extends JInternalFrame implements ActionListener, Int
     private StudentBusiness studentBusiness;
 
     public JIFNewStudent() {
-        super("Stundent Register", false, true, false, false);
+        super("Student Register", false, true, false, false);
         this.addInternalFrameListener(this);
         this.setSize(465, 280);
         this.setLocation(20, 40);
