@@ -18,7 +18,6 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -33,11 +32,12 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableModel;
 
-public class JIFLoan extends JInternalFrame implements ActionListener, MouseListener, KeyListener,InternalFrameListener {
+public class JIFLoan extends JInternalFrame implements ActionListener, MouseListener, KeyListener, InternalFrameListener {
+
     //atributos
     private JComboBox jComboSelection, jComboBox;
     private JButton jbtnOk;
-    private JDateChooser jdcLoanDate,jdcReturnDate;
+    private JDateChooser jdcLoanDate, jdcReturnDate;
     private JTable jtbTable;
     private DefaultTableModel dtmModelTable;
     private JScrollPane scrollPane;
@@ -46,19 +46,22 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
     private ArrayList<Audiovisual> list2;
     private String format;
     private JTextField jtfText, jtfCode, jtfCode1;
-    private JLabel jlblText, jlblCode,jlblLoanDate,jlblReturnLoan;
+    private JLabel jlblText, jlblCode, jlblLoanDate, jlblReturnLoan;
     private String studenID;
     private MaterialBusiness materialBusiness;
-    
+    private int rowObjetIndex;
+    private String name = "";
+    private String code = "";
+
     public JIFLoan(String id) {
         super("Loan", false, true, false, false);
         this.setSize(700, 500);
-        this.setContentPane(new CustomPanel(1,0,0,700,500));
+        this.setContentPane(new CustomPanel(1, 0, 0, 700, 500));
         this.setLayout(null);
         this.setLocation(30, 30);
         this.subList = new ArrayList<>();
         this.studenID = id;
-        this.materialBusiness=new MaterialBusiness();
+        this.materialBusiness = new MaterialBusiness();
         init();
     } // constructor
 
@@ -75,8 +78,8 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.jlblCode = new JLabel("Insert Code");
         this.jlblText = new JLabel("Insert Name");
         this.jbtnOk = new JButton("OK");
-        this.jlblLoanDate=new JLabel("Loan Date");
-        this.jlblReturnLoan=new JLabel("Return Date");
+        this.jlblLoanDate = new JLabel("Loan Date");
+        this.jlblReturnLoan = new JLabel("Return Date");
 
         this.jComboSelection.setBounds(30, 30, 100, 30);
         this.jdcLoanDate.setBounds(445, 190, 100, 25);
@@ -88,7 +91,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.jlblText.setBounds(555, 80, 100, 25);
         this.jlblLoanDate.setBounds(450, 160, 100, 25);
         this.jlblReturnLoan.setBounds(555, 160, 100, 25);
-        
+
         this.jbtnOk.setBounds(510, 240, 70, 40);
 
         this.jtfText.setVisible(true);
@@ -109,16 +112,16 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.jComboBox.addActionListener(this);
         this.add(this.jComboBox);
         try {
-            this.list1=materialBusiness.getBooksAndAudiovisual().get(0);
+            this.list1 = materialBusiness.getBooksAndAudiovisual().get(0);
             System.out.println(this.list1.size());
         } catch (IOException ex) {
             Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-            initTableBook(list1, jComboBox.getSelectedItem().toString());
-        
+
+        initTableBook(list1, jComboBox.getSelectedItem().toString());
+
         this.add(this.jdcLoanDate);
         this.add(this.jdcReturnDate);
         this.add(this.jComboSelection);
@@ -143,24 +146,16 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+
         if (e.getSource() == this.jComboSelection) {
 
             if (this.jComboBox.isShowing()) {
                 this.remove(this.jComboBox);
             }
             clearTextFields();
-            
-            if (this.jComboSelection.getSelectedIndex() == 0) {
 
-                try {
-                    this.list1 = this.materialBusiness.getBooksAndAudiovisual().get(0);
-                } catch (IOException ex) {
-                    Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                initTableBook(list1,format);
+            if (this.jComboSelection.getSelectedIndex() == 0) {
+                //inicializa la tabla y los componentes si se quieren ver libros
                 if (this.jtfCode1.isShowing()) {
                     this.remove(this.jtfCode1);
                 }
@@ -168,18 +163,24 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
                 this.jComboBox.setBounds(150, 30, 100, 30);
                 this.jComboBox.addActionListener(this);
                 this.add(this.jComboBox);
+                this.format = this.jComboBox.getSelectedItem().toString();
+                try {
+                    this.list1 = this.materialBusiness.getBooksAndAudiovisual().get(0);
+                } catch (IOException ex) {
+                    Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                initTableBook(list1, format);
+
                 this.jtfText.setVisible(true);
                 this.jtfCode.setVisible(true);
                 this.jlblCode.setVisible(true);
                 this.jlblText.setVisible(true);
             } else {
+                //inicializa la tabla y los componentes si se quieren ver materiales audiovisuales
                 clearTextFields();
-                try {
-                    this.list2 = this.materialBusiness.getBooksAndAudiovisual().get(1);
-                } catch (IOException | ClassNotFoundException ex) {
-                    Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                initTableMaterial(list2,format);
+
                 if (this.jlblText.isShowing()) {
                     this.jtfText.setVisible(false);
                     this.jlblText.setVisible(false);
@@ -189,12 +190,21 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
                     this.jtfCode1.setVisible(true);
                     this.jlblCode.setVisible(true);
                 }
-                this.jComboBox = new JComboBox(new String[]{"Disk", "Laptop", "Mouse", "Projector", "Other"});
+                this.jComboBox = new JComboBox(new String[]{"CD", "DVD", "Laptop", "Mouse", "Projector", "Other"});
                 this.jComboBox.setBounds(150, 30, 100, 30);
                 this.jComboBox.addActionListener(this);
                 this.add(this.jComboBox);
+                try {
+                    this.list2 = this.materialBusiness.getBooksAndAudiovisual().get(1);
+                } catch (IOException | ClassNotFoundException ex) {
+                    Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.format = this.jComboBox.getSelectedItem().toString();
+                System.out.println(format);
+                initTableMaterial(list2, format);
             }
         } else if (e.getSource() == this.jComboBox) {
+            ////inicializa la tabla si se selecciona una cateria en especifico
             if (this.jComboSelection.getSelectedIndex() == 0) {
                 this.format = this.jComboBox.getSelectedItem().toString();
                 initTableBook(list1, format);
@@ -207,28 +217,28 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
 
         } else if (e.getSource() == this.jbtnOk) {
             //agarra las fechas de los JDateChooser y las guarda en variables y luego guarda los pedidos
-            LoanBusiness loanBusiness = new LoanBusiness();    
+            LoanBusiness loanBusiness = new LoanBusiness();
             String dayLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.DAY_OF_MONTH));
             String monthLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.MONTH) + 1);
             String yearLoan = Integer.toString(this.jdcLoanDate.getCalendar().get(Calendar.YEAR));
             String dayReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.DAY_OF_MONTH));
             String monthReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.MONTH) + 1);
             String yearReturn = Integer.toString(this.jdcReturnDate.getCalendar().get(Calendar.YEAR));
-            String loanDate=yearLoan+"-"+monthLoan+"-"+dayLoan;
-            String returnDate =yearReturn+"-"+monthReturn+"-"+dayReturn;
+            String loanDate = yearLoan + "-" + monthLoan + "-" + dayLoan;
+            String returnDate = yearReturn + "-" + monthReturn + "-" + dayReturn;
             try {
-                if (loanBusiness.addLoan(new Loan(this.subList.get(this.rowObjetIndex).getCode(), loanDate, returnDate, this.studenID,this.jComboSelection.getSelectedItem().toString()))) {
+                if (loanBusiness.addLoan(new Loan(this.subList.get(this.rowObjetIndex).getCode(), loanDate, returnDate, this.studenID, this.jComboSelection.getSelectedItem().toString()))) {
                     JOptionPane.showMessageDialog(rootPane, "Success");
                     //recarga las tablas por si algún pedido dejá sin un producto a la biblioteca
                     if (this.jComboSelection.getSelectedIndex() == 0) {
-                    
-                        this.materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 0,0);
-                        list1=this.materialBusiness.getBooksAndAudiovisual().get(0);
+
+                        this.materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 0, 0);
+                        list1 = this.materialBusiness.getBooksAndAudiovisual().get(0);
                         initTableBook(list1, format);
                     } else {
-                    
-                        this.materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 1,0);
-                        list2=this.materialBusiness.getBooksAndAudiovisual().get(1);
+
+                        this.materialBusiness.update(this.subList.get(this.rowObjetIndex).getCode(), 1, 0);
+                        list2 = this.materialBusiness.getBooksAndAudiovisual().get(1);
                         initTableMaterial(list2, format);
                     }
                 }
@@ -237,56 +247,53 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(JIFLoan.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
     } // actionPerformed
 
+    //inicializa la tabla si se busca libros por codigo o por nombre
     public void initTableBook(ArrayList<Book> list, String subString, String format, int var) {
         this.remove(this.scrollPane);
         int tam = subString.length();
-        this.subList=new ArrayList<>();
+        this.subList = new ArrayList<>();
         Object[][] vehicles = new Object[0][0];
         String[] columNames1 = {"Name", "Author", "Year", "Language", "Theme"};
         this.dtmModelTable = new DefaultTableModel(vehicles, columNames1);
         for (int i = 0; i < list.size(); i++) {
-            if (tam <= list.get(i).getName().length()&&list.get(i).getAmountAvaiable()>0 && list.get(i).getFormat().equals(format) && var == 0 && 
-            list.get(i).getName().substring(0, subString.length()).equalsIgnoreCase(subString)) {
+            if (tam <= list.get(i).getName().length()
+                    && list.get(i).getAmountAvaiable() > 0 && list.get(i).getFormat().equals(format) && var == 0
+                    && list.get(i).getName().substring(0, subString.length()).equalsIgnoreCase(subString)) {
+
                 this.subList.clear();
                 this.subList.add(list.get(i));
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getName(),
                     list.get(i).getAuthor(), list.get(i).getYear(), list.get(i).getLanguage(), list.get(i).getTheme()});
-            } else if (list.get(i).getFormat().equals(format) && tam <= 9 && var == 1 && String.valueOf(list.get(i).getCode()).substring(0, subString.length()).equalsIgnoreCase(subString)) {
+
+            } else if (list.get(i).getFormat().equals(format) && tam <= 9 && var == 1
+                    && String.valueOf(list.get(i).getCode()).substring(0, subString.length()).equalsIgnoreCase(subString)) {
+
                 this.subList.clear();
                 this.subList.add(list.get(i));
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getName(),
                     list.get(i).getAuthor(), list.get(i).getYear(), list.get(i).getLanguage(), list.get(i).getTheme()});
             }
-
         }//for
-
         this.jtbTable = new JTable(this.dtmModelTable);
-
         this.scrollPane = new JScrollPane(this.jtbTable);
-
-        scrollPane.setBounds(
-                10, 80, 400, 285);
-
+        scrollPane.setBounds(10, 80, 400, 285);
         this.jtbTable.setSelectionBackground(Color.GREEN);
-
         this.add(scrollPane);
+        this.jtbTable.addMouseListener(this);
+    }
 
-                 
-        this.jtbTable.addMouseListener(
-                this);
-    } // inicializa el modelo de la tabla cargando los valores del archivo
-
+    //inicializa la tabla si se selecciona una categoría en específico
     public void initTableBook(ArrayList<Book> list, String format) {
         this.remove(this.scrollPane);
         Object[][] vehicles = new Object[0][0];
         String[] columNames1 = {"Name", "Author", "Year", "Language", "Theme"};
         this.dtmModelTable = new DefaultTableModel(vehicles, columNames1);
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getFormat().equalsIgnoreCase(format)&&list.get(i).getAmountAvaiable()>0) {
+            if (list.get(i).getFormat().equalsIgnoreCase(format) && list.get(i).getAmountAvaiable() > 0) {
                 this.subList.clear();
                 this.subList.add(list.get(i));
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getName(),
@@ -301,8 +308,9 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
 
         this.add(scrollPane);
         this.jtbTable.addMouseListener(this);
-    } // inicializa el modelo de la tabla cargando los valores del archivo    
+    }
 
+    //inicializa la tabla si se busca Material Audiovisual por codigo o por nombre
     public void initTableMaterial(ArrayList<Audiovisual> list, String subString, String format) {
         this.remove(this.scrollPane);
 
@@ -310,8 +318,9 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         String[] columNames1 = {"Type", "ID", "Description", "Code"};
         this.dtmModelTable = new DefaultTableModel(vehicles, columNames1);
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getType().equals(format)
-                    && list.get(i).isAvailability()&& subString.length() <= 5 && String.valueOf(this.list2.get(i).getCode()).substring(0, subString.length()).equalsIgnoreCase(subString)) {
+            if (list.get(i).getType().equals(format) && list.get(i).isAvailability() && subString.length() <= 5
+                    && String.valueOf(this.list2.get(i).getCode()).substring(0, subString.length()).equalsIgnoreCase(subString)) {
+
                 this.subList.add(list.get(i));
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getType(),
                     list.get(i).getId(), list.get(i).getDescription(), list.get(i).getCode()});
@@ -324,8 +333,9 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.jtbTable.setSelectionBackground(Color.GREEN);
         this.add(scrollPane);
         this.jtbTable.addMouseListener(this);
-    } // inicializa el modelo de la tabla cargando los valores del archivo
+    }
 
+    //inicializa la tabla si se selecciona una categoría en especifico
     public void initTableMaterial(ArrayList<Audiovisual> list, String format) {
         this.remove(this.scrollPane);
 
@@ -334,6 +344,7 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.dtmModelTable = new DefaultTableModel(vehicles, columNames1);
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getType().equals(format) && list.get(i).isAvailability()) {
+
                 this.subList.clear();
                 this.subList.add(list.get(i));
                 this.dtmModelTable.addRow(new Object[]{list.get(i).getType(),
@@ -347,11 +358,9 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
         this.jtbTable.setSelectionBackground(Color.GREEN);
         this.add(scrollPane);
         this.jtbTable.addMouseListener(this);
-    } // inicializa el modelo de la tabla cargando los valores del archivo
+    }
 
-
-    private int rowObjetIndex;
-
+    //obtiene la posición de la fila de la tabla que se está seleccionando
     @Override
     public void mouseClicked(MouseEvent e) {
         this.rowObjetIndex = this.jtbTable.getSelectedRow();
@@ -376,12 +385,10 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
     public void mouseExited(MouseEvent e) {
 
     }
-    private String name = "";
-    private String code = "";
-
+    //listeners para detectar las teclas e ir actualizando las tablas con las palabras formadas
     @Override
     public void keyTyped(KeyEvent e) {
-        this.format=this.jComboBox.getSelectedItem().toString();
+        this.format = this.jComboBox.getSelectedItem().toString();
         if (e.getSource() == this.jtfText) {
             int keycode = e.getKeyChar();
             if (keycode != 8) {
@@ -442,37 +449,37 @@ public class JIFLoan extends JInternalFrame implements ActionListener, MouseList
 
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
-        
+
     }
 
     @Override
     public void internalFrameClosing(InternalFrameEvent e) {
-        
+
     }
 
     @Override
     public void internalFrameClosed(InternalFrameEvent e) {
-       MainWindows.flag=1;
+        MainWindows.flag = 1;
     }
 
     @Override
     public void internalFrameIconified(InternalFrameEvent e) {
-        
+
     }
 
     @Override
     public void internalFrameDeiconified(InternalFrameEvent e) {
-        
+
     }
 
     @Override
     public void internalFrameActivated(InternalFrameEvent e) {
-        
+
     }
 
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) {
-        
+
     }
 
 } // fin de la clase
